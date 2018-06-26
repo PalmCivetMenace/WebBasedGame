@@ -14,8 +14,10 @@ this.speed=.001; //>> Tweak This
 this.Velx=this.speed;
 this.Vely=this.speed;
 this.calVel=function(x,y){
-forceX=this.x-x;
+
+forceX=(this.x)-x+(document.body.clientWidth)/2-(canvas.width/2);
 forceY=this.y-y;
+console.log(x,y,forceX,forceY);
 this.Velx=this.speed*forceX;
 this.Vely=this.speed*forceY;
 }
@@ -54,9 +56,10 @@ this.Vely=.01;
 this.image="plat.png";
 }
 
-var frog= new _frog(30,30);
+var frog= new _frog(64,48);
 var BackG= new _BackG();
 var Plats=[];
+newPlat();
 newPlat();
 newPlat();
 //--------------MOVE OBJECTS
@@ -114,6 +117,7 @@ document.onmousedown= function(){isDragging=true
 document.onmouseup =function(event){
 if(isDragging&&!shotFrog)       // >>>>>>> isGrounded is needed so that frog is only launched when on a platform 
 {
+	console.log(event.clientX,event.clientY);
 frog.calVel(event.clientX,event.clientY);
 isDragging=false;
 shotFrog=true;
@@ -159,7 +163,7 @@ clearScene();// Comes Before the frog as it should drawn under the frog
 	else {
 	
 	follow(dt);
-		
+
 	}
 
 Plats.forEach(function(plat)
@@ -173,4 +177,3 @@ drawObj(plat);
 );
 drawObj(frog);
 }
-
