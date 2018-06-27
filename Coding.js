@@ -6,14 +6,17 @@ var isGamerOver=false;
 var lastRender=0;
 var shotFrog=false;
 var numberOfPlats=3;
+var Score;
+var ScoreText=document.getElementById("Score");
+
 //-----------------OBJECT CREATION
 function _frog(w,h){
 
 this.width=w;
 this.height=h;
 this.image= "frog.svg";
-this.x=200;
-this.y=200;
+this.x;
+this.y;
 this.speed=.001; //>> Tweak This
 this.Velx=this.speed;
 this.Vely=this.speed;
@@ -113,7 +116,9 @@ isDead(frog.Velx,frog.Vely);
 }
 //-------------- GAME OVER
 function isDead(Velx,Vely){
-if((Math.abs(Velx)<frog.DeathSpeed)&& (Math.abs(Vely)<frog.DeathSpeed)){
+if((Math.abs(Velx)<frog.DeathSpeed)&& (Math.abs(Vely)<frog.DeathSpeed) 
+||frog.x>canvas.width||(frog.x+frog.width)<0||(frog.y+frog.height)<0||frog.y>canvas.height
+){
 frog.Velx=0;
 frog.Vely=0;
 GameOver();
@@ -121,18 +126,28 @@ GameOver();
 
 }
 function GameOver(){
+
+
 splash.play();
 isGameOver=true;
 retry.style.display="block";
+
+
 }
 //--------------- RESTART GAME
 
 
 function Restart(){
 retry.style.display="none";
-isGameOver=false
+isGameOver=false;
+frog.x=canvas.width/2-frog.width/2;
+frog.y=canvas.height/2;
+frog.folVelx=0;
+frog.folVely=0;
 shotFrog=false; // this is only false at initialization
 lastRender=0;
+
+ResetScore();
 requestAnimationFrame(deltaTimeCal);//>>> Implement a time based system for this
 }
 
@@ -210,10 +225,24 @@ function clearScene(){ // Simply Redraws the background
 function isColliding(a,b){
 
 if((a.x+a.width/2)>b.x && (a.x+a.width/2)<(b.x+b.width)&&(a.y+a.height)>b.y && a.y<(b.y+b.height)&&a.floating==true ){
+AddScore();
+
 return true;
 }
 else {return false;}
 
+
+}
+//------------------ SCORE MANAGEMENT
+function AddScore(){
+var increment=1;
+Score+=increment;
+
+ScoreText.innerHTML="Score : "+Score;
+}
+function ResetScore(){
+Score=0;
+ScoreText.innerHTML="Score : "+0;
 
 }
 
