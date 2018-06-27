@@ -1,7 +1,9 @@
 const canvas= document.getElementById("Scene");
 const scene= canvas.getContext('2d');
-
-
+const retry = document.getElementById("Retry");
+var isGamerOver=false;
+var lastRender=0;
+var shotFrog=false;
 //-----------------OBJECT CREATION
 function _frog(w,h){
 
@@ -13,8 +15,9 @@ this.y=200;
 this.speed=.001; //>> Tweak This
 this.Velx=this.speed;
 this.Vely=this.speed;
-this.calVel=function(x,y){
 
+this.DeathSpeed=0.005;
+this.calVel=function(x,y){
 forceX=(this.x)-x+(document.body.clientWidth)/2-(canvas.width/2);
 forceY=this.y-y;
 //console.log(x,y,forceX,forceY);
@@ -67,15 +70,30 @@ this.Velx=0;
 this.Vely=.02;/// << Increase With time
 
 }
-
-var frog= new _frog(64,48);
-var BackG= new _BackG();
-var Plats=[];
-newPlat();
-newPlat();
-newPlat();
+//------------- AUDIO
+function sound(src) {
+    this.sound = document.createElement("audio");
+    this.sound.src = src;
+    this.sound.setAttribute("preload", "auto");
+    this.sound.setAttribute("controls", "none");
+    this.sound.style.display = "none";
+    document.body.appendChild(this.sound);
+    this.play = function(){
+        this.sound.play();
+    }
+    this.stop = function(){
+        this.sound.pause();
+    }
+	
+    this.loop = function(){
+	 this.sound.setAttribute("loop","true");
+		this.sound.play();
+	
+	}
+} 
 //--------------MOVE OBJECTS
 function move(obj,dt){
+
 
 obj.x+= obj.Velx*dt;
 obj.y+= obj.Vely*dt;
@@ -95,15 +113,31 @@ frog.Velx-=frog.Velx*frog.resis;
 
 isDead(frog.Velx,frog.Vely);
 }
-//-------------- GameOver
+//-------------- GAME OVER
 function isDead(Velx,Vely){
-if((Math.abs(Velx)<0.005)&& (Math.abs(Vely)<0.005)){
+if((Math.abs(Velx)<frog.DeathSpeed)&& (Math.abs(Vely)<frog.DeathSpeed)){
 frog.Velx=0;
 frog.Vely=0;
-console.log("Game OVER");
+GameOver();
 }
 
 }
+function GameOver(){
+splash.play();
+isGameOver=true;
+retry.style.display="block";
+}
+//--------------- RESTART GAME
+
+
+function Restart(){
+retry.style.display="none";
+isGameOver=false
+shotFrog=false; // this is only false at initialization
+lastRender=0;
+requestAnimationFrame(deltaTimeCal);//>>> Implement a time based system for this
+}
+
 //--------------SPAWN PLATS
 
 function newPlat(){
@@ -153,21 +187,17 @@ isDragging=false;
 shotFrog=true;
 }};
 document.onmousemove=function(event){
-if(isDragging){
 
-}}; 
+}
+
 //------------------UPDATE
-
-shotFrog=false; // this is only false at initialization
-var lastRender=0;
-
-requestAnimationFrame(deltaTimeCal);//>>> Implement a time based system for this
-
 function deltaTimeCal(timeStamp){
 	var dt=timeStamp-lastRender;
 	update(dt);
 	lastRender=timeStamp;
+	if(!isGameOver){
 	window.requestAnimationFrame(deltaTimeCal);
+	}
 }
 
 function update(dt){
@@ -207,3 +237,17 @@ drawObj(plat);
 );
 drawObj(frog);
 }
+
+
+var frog= new _frog(64,48);
+var BackG= new _BackG();
+var Plats=[];
+newPlat();
+newPlat();
+newPlat();
+gameTheme= new sound("Purple Pardon.mp3");
+gameTheme.loop();
+splash=new sound("splash.mp3");
+
+
+Restart();
