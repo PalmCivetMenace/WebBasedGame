@@ -17,13 +17,13 @@ this.calVel=function(x,y){
 
 forceX=(this.x)-x+(document.body.clientWidth)/2-(canvas.width/2);
 forceY=this.y-y;
-console.log(x,y,forceX,forceY);
+//console.log(x,y,forceX,forceY);
 this.Velx=this.speed*forceX;
 this.Vely=this.speed*forceY;
 }
 this.folVelx=0;
 this.folVely=0;
-
+this.resis=.01;
 }
 
 
@@ -49,11 +49,23 @@ this.floating=true;
 this.maxWidth=30;
 this.minWidth=5;
 
-this.width=this.minWidth+Math.random()*this.maxWidth;
-this.height=this.minHeight+Math.random()*this.maxHeight;
+var platforms=[
+[50,50,"plat_1.png"],
+[20,20,"plat_2.png"],
+[40,80,"plat_3.png"],
+];
+// Explaination = [width:20,height:100,image:"plat_2.png"] 
+
+var randplat= Math.floor(Math.random()*platforms.length);
+
+this.width=platforms[randplat][0];
+this.height=platforms[randplat][1];
+this.image=platforms[randplat][2];
+
+
 this.Velx=0;
-this.Vely=.01;
-this.image="plat.png";
+this.Vely=.02;/// << Increase With time
+
 }
 
 var frog= new _frog(64,48);
@@ -64,8 +76,11 @@ newPlat();
 newPlat();
 //--------------MOVE OBJECTS
 function move(obj,dt){
+
 obj.x+= obj.Velx*dt;
 obj.y+= obj.Vely*dt;
+
+
 
 }
 function follow(dt)
@@ -73,6 +88,21 @@ function follow(dt)
 
 frog.x+=frog.folVelx*dt;
 frog.y+=frog.folVely*dt;
+}
+function airResis(){
+frog.Vely-=frog.Vely*frog.resis;
+frog.Velx-=frog.Velx*frog.resis;
+
+isDead(frog.Velx,frog.Vely);
+}
+//-------------- GameOver
+function isDead(Velx,Vely){
+if((Math.abs(Velx)<0.005)&& (Math.abs(Vely)<0.005)){
+frog.Velx=0;
+frog.Vely=0;
+console.log("Game OVER");
+}
+
 }
 //--------------SPAWN PLATS
 
@@ -83,7 +113,7 @@ Plats.push(new _Plat);
 
 //-------------- RENDER STUFF
 function drawObj(obj){
-//console.log(obj); 
+
 var img = new Image();
 img.onload=function(){
 scene.drawImage(img,obj.x,obj.y,obj.width,obj.height);
@@ -117,7 +147,7 @@ document.onmousedown= function(){isDragging=true
 document.onmouseup =function(event){
 if(isDragging&&!shotFrog)       // >>>>>>> isGrounded is needed so that frog is only launched when on a platform 
 {
-	console.log(event.clientX,event.clientY);
+	//console.log(event.clientX,event.clientY);
 frog.calVel(event.clientX,event.clientY);
 isDragging=false;
 shotFrog=true;
@@ -146,7 +176,7 @@ clearScene();// Comes Before the frog as it should drawn under the frog
 	if(shotFrog)
 	{	// When clicked and released the shotFrog is made true
 	move(frog,dt);
-
+	airResis();
 	Plats.forEach(function(plat)
 	{
 	if(isColliding(plat,frog)){
