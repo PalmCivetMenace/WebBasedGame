@@ -1,9 +1,11 @@
+//-------------------INIT 1
 const canvas= document.getElementById("Scene");
 const scene= canvas.getContext('2d');
 const retry = document.getElementById("Retry");
 var isGamerOver=false;
 var lastRender=0;
 var shotFrog=false;
+var numberOfPlats=3;
 //-----------------OBJECT CREATION
 function _frog(w,h){
 
@@ -40,17 +42,11 @@ this.y=0;
 
 }
 
-function _Plat(){
+function _Plat(x,y){
 
-this.x=Math.random()*300;
-this.y=200;
-this.maxHeight=100;
-this.minHeight=20;
-
+this.x=x;
+this.y=y;
 this.floating=true;
-
-this.maxWidth=30;
-this.minWidth=5;
 
 var platforms=[
 [50,50,"plat_1.png"],
@@ -67,7 +63,9 @@ this.image=platforms[randplat][2];
 
 
 this.Velx=0;
-this.Vely=.02;/// << Increase With time
+this.minVely=0.05; // increase with player Progress
+this.increment=0.032;
+this.Vely=this.minVely+(this.increment*Math.random());
 
 }
 //------------- AUDIO
@@ -140,11 +138,57 @@ requestAnimationFrame(deltaTimeCal);//>>> Implement a time based system for this
 
 //--------------SPAWN PLATS
 
-function newPlat(){
-Plats.push(new _Plat);
+function _Spawns(){
+
+this.spawnPoints=[];
+	for(i=0;i<numberOfPlats;i++)
+	{	
+	xPos=(i/numberOfPlats*canvas.width)+(1/numberOfPlats*canvas.width)/2;
+	this.spawnPoints.push([xPos,10,0]); //<<< Tweak This
+	// Syntax : [x:xPos,y:10,waitTime:0]
+		
+	}
+this.secondCounter=0;
+this.minWait=2;
+this.extraWait=1;
+this.timeSpawn=function(dt){
+	this.secondCounter+=dt
+	if(this.secondCounter>1000)
+	{
+
+ 		this.secondCounter=0;
+		this.spawnPoints.forEach(function(spawn)
+		{
+		//console.log(spawn[2]);
+		if(--(spawn[2])<0)
+		{
+			
+				
+		spawn[2]= this.minWait + (Math.random()* this.extraWait);
+		this.newPlat(spawn[0],spawn[1]); 
+
+		}
+	
+		}.bind(this) // SOMETHING NEW !!!
+		);
+	}
+}
+
+	this.newPlat=function(x,y){
+	Plats.push(new _Plat(x,y));
+
+	}	
+}
+//--------------MEMORY MANAGEMENT
+function freeMemory( i){
+if(Plats[i].y>canvas.height)
+{
+Plats.splice(i,1);
 
 }
 
+
+}
 //-------------- RENDER STUFF
 function drawObj(obj){
 
@@ -220,31 +264,27 @@ clearScene();// Comes Before the frog as it should drawn under the frog
 	});
 
 	}
-	else {
-	
+	else {	
 	follow(dt);
-
 	}
 
-Plats.forEach(function(plat)
-{
+for(i=Plats.length-1;i>=0;i--){
+plat=Plats[i];
 move(plat,dt);
 drawObj(plat);
-//console.log("YEEEP");
-//isColliding(plat,frog);
+freeMemory(i);
 }
-
-);
 drawObj(frog);
+Spawns.timeSpawn(dt);
+
 }
 
-
+//-----------------------------INIT 2
 var frog= new _frog(64,48);
 var BackG= new _BackG();
 var Plats=[];
-newPlat();
-newPlat();
-newPlat();
+var Spawns= new _Spawns();
+
 gameTheme= new sound("Purple Pardon.mp3");
 gameTheme.loop();
 splash=new sound("splash.mp3");
