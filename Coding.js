@@ -52,9 +52,9 @@ this.y=y;
 this.floating=true;
 
 var platforms=[
-[50,50,"plat_1.png"],
-[20,20,"plat_2.png"],
-[40,80,"plat_3.png"],
+[70,49,"plat_1.png"],
+[60,47,"plat_2.png"],
+[44,28,"plat_3.png"],
 ];
 // Explaination = [width:20,height:100,image:"plat_2.png"] 
 
