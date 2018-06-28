@@ -1,4 +1,4 @@
-m///-------------------INIT 1
+///-------------------INIT 1
 const canvas= document.getElementById("Scene");
 const scene= canvas.getContext('2d');
 const retry = document.getElementById("Retry");
@@ -53,7 +53,7 @@ this.y=y;
 this.floating=true;
 
 var platforms=[
-[70,49,"plat_1.png"],
+[70,49	,"plat_1.png"],
 [60,47,"plat_2.png"],
 [44,28,"plat_3.png"],
 ];
