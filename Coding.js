@@ -1,4 +1,4 @@
-//-------------------INIT 1
+m///-------------------INIT 1
 const canvas= document.getElementById("Scene");
 const scene= canvas.getContext('2d');
 const retry = document.getElementById("Retry");
@@ -7,8 +7,8 @@ var lastRender=0;
 var shotFrog=false;
 var numberOfPlats=3;
 var Score;
-var ScoreText=document.getElementById("Score");
-
+const ScoreText=document.getElementById("Score");
+ScoreText.style.left=-canvas.width/2+60; //<< HARD coded in the px val
 //-----------------OBJECT CREATION
 function _frog(w,h){
 
@@ -28,6 +28,7 @@ forceY=this.y-y;
 //console.log(x,y,forceX,forceY);
 this.Velx=this.speed*forceX;
 this.Vely=this.speed*forceY;
+console.log(Math.atan(this.Vely/this.Velx)*180/Math.PI);
 }
 this.folVelx=0;
 this.folVely=0;
@@ -112,19 +113,22 @@ function airResis(){
 frog.Vely-=frog.Vely*frog.resis;
 frog.Velx-=frog.Velx*frog.resis;
 
-isDead(frog.Velx,frog.Vely);
+
 }
 //-------------- GAME OVER
-function isDead(Velx,Vely){
+function isDrowned(Velx,Vely){
 if((Math.abs(Velx)<frog.DeathSpeed)&& (Math.abs(Vely)<frog.DeathSpeed) 
-||frog.x>canvas.width||(frog.x+frog.width)<0||(frog.y+frog.height)<0||frog.y>canvas.height
 ){
 frog.Velx=0;
 frog.Vely=0;
 GameOver();
 }
-
 }
+function isOutOfBounds(){
+if(frog.x>canvas.width||(frog.x+frog.width)<0||(frog.y+frog.height)<0||frog.y>canvas.height){
+GameOver();
+
+}}
 function GameOver(){
 
 
@@ -226,7 +230,7 @@ function isColliding(a,b){
 
 if((a.x+a.width/2)>b.x && (a.x+a.width/2)<(b.x+b.width)&&(a.y+a.height)>b.y && a.y<(b.y+b.height)&&a.floating==true ){
 AddScore();
-
+stick.play();
 return true;
 }
 else {return false;}
@@ -272,7 +276,8 @@ function deltaTimeCal(timeStamp){
 	window.requestAnimationFrame(deltaTimeCal);
 	}
 }
-
+var waitTimer=10;
+var  counter=0;
 function update(dt){
 
 clearScene();// Comes Before the frog as it should drawn under the frog
@@ -280,6 +285,10 @@ clearScene();// Comes Before the frog as it should drawn under the frog
 	{	// When clicked and released the shotFrog is made true
 	move(frog,dt);
 	airResis();
+	
+	isDrowned(frog.Velx,frog.Vely);
+
+	isOutOfBounds();
 	Plats.forEach(function(plat)
 	{
 	if(isColliding(plat,frog)){
@@ -294,15 +303,19 @@ clearScene();// Comes Before the frog as it should drawn under the frog
 
 	}
 	else {	
+
+
 	follow(dt);
+	isOutOfBounds();
 	}
 
 for(i=Plats.length-1;i>=0;i--){
-plat=Plats[i];
-move(plat,dt);
-drawObj(plat);
-freeMemory(i);
+	plat=Plats[i];
+	move(plat,dt);
+	drawObj(plat);
+	freeMemory(i);
 }
+
 drawObj(frog);
 Spawns.timeSpawn(dt);
 
@@ -317,6 +330,6 @@ var Spawns= new _Spawns();
 gameTheme= new sound("Purple Pardon.mp3");
 gameTheme.loop();
 splash=new sound("splash.mp3");
-
+stick = new sound("splash.mp3");
 
 Restart();
