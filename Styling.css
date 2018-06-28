@@ -1,5 +1,19 @@
+#container
+{
+position:relative;
+}
+
 #Scene{
 background-color:#ddd;
 
+z-index:1;
 
+}
+#Score{
+top:0;
+left:100px;
+position:absolute;
+width:100%;
+
+z-index:2;
 }
