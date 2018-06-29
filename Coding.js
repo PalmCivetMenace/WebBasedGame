@@ -56,7 +56,7 @@ this.floating=true;
 
 
 var platforms=[
-[70,49	,"plat_1.png"],
+[65,45,"plat_1.png"],
 [60,47,"plat_2.png"],
 [44,28,"plat_3.png"],
 ];
