@@ -87,7 +87,7 @@ this.x=x;
 this.y=y;
 this.width=10;
 this.height=10;
-this.image="plat_1.png";
+this.image="bubble.png";
 }
 function initGuides(length){
 for(i=0;i<length;i++)
@@ -280,9 +280,13 @@ ScoreText.innerHTML="Score : "+0;
 //------------------INPUT
 var isDragging=false;
 document.onmousedown= function(event){
+
 		isDragging=true;
-		frog.savedX=event.clientX;
-		frog.savedY=event.clientY;//This is so that the guiding does change when the frog goes down
+
+		frog.savedX=frog.x;
+
+		frog.savedY=frog.y;//This is so that the guiding does change when the frog goes down
+
 				};
 document.onmouseup =function(event){
 if(isDragging&&!shotFrog)       // >>>>>>> isGrounded is needed so that frog is only launched when on a platform 
