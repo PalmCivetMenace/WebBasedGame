@@ -22,9 +22,12 @@ this.Velx=this.speed;
 this.Vely=this.speed;
 
 this.DeathSpeed=0.005;
+this.savedX=0;
+this.savedY=0;
 this.calVel=function(x,y){
-forceX=(this.x)-x+(document.body.clientWidth)/2-(canvas.width/2);
-forceY=this.y-y;
+forceX=(this.savedX)-x+(document.body.clientWidth)/2-(canvas.width/2);
+forceY=this.savedY-y;
+
 //console.log(x,y,forceX,forceY);
 this.Velx=this.speed*forceX;
 this.Vely=this.speed*forceY;
@@ -276,8 +279,10 @@ ScoreText.innerHTML="Score : "+0;
 
 //------------------INPUT
 var isDragging=false;
-document.onmousedown= function(){
-		isDragging=true
+document.onmousedown= function(event){
+		isDragging=true;
+		frog.savedX=event.clientX;
+		frog.savedY=event.clientY;//This is so that the guiding does change when the frog goes down
 				};
 document.onmouseup =function(event){
 if(isDragging&&!shotFrog)       // >>>>>>> isGrounded is needed so that frog is only launched when on a platform 
