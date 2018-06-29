@@ -28,7 +28,9 @@ forceY=this.y-y;
 //console.log(x,y,forceX,forceY);
 this.Velx=this.speed*forceX;
 this.Vely=this.speed*forceY;
-console.log(Math.atan(this.Vely/this.Velx)*180/Math.PI);
+return [this.Velx,this.Vely];
+//console.log(forceX,forceY);
+//console.log(Math.atan(forceX/forceY)*180/Math.PI);
 }
 this.folVelx=0;
 this.folVely=0;
@@ -48,15 +50,17 @@ this.y=0;
 
 function _Plat(x,y){
 
-this.x=x;
-this.y=y;
+
 this.floating=true;
+
+
 
 var platforms=[
 [70,49	,"plat_1.png"],
 [60,47,"plat_2.png"],
 [44,28,"plat_3.png"],
 ];
+
 // Explaination = [width:20,height:100,image:"plat_2.png"] 
 
 var randplat= Math.floor(Math.random()*platforms.length);
@@ -64,12 +68,29 @@ var randplat= Math.floor(Math.random()*platforms.length);
 this.width=platforms[randplat][0];
 this.height=platforms[randplat][1];
 this.image=platforms[randplat][2];
+this.x=x-this.width/2;
+this.y=y;
 
 
 this.Velx=0;
 this.minVely=0.05; // increase with player Progress
 this.increment=0.032;
 this.Vely=this.minVely+(this.increment*Math.random());
+
+}
+//----------- GUIDE
+function _Guide(x,y){
+this.x=x;
+this.y=y;
+this.width=10;
+this.height=10;
+this.image="plat_1.png";
+}
+function initGuides(length){
+for(i=0;i<length;i++)
+{
+Guides.push(new _Guide(0,0));
+}
 
 }
 //------------- AUDIO
@@ -150,7 +171,6 @@ frog.folVelx=0;
 frog.folVely=0;
 shotFrog=false; // this is only false at initialization
 lastRender=0;
-
 ResetScore();
 requestAnimationFrame(deltaTimeCal);//>>> Implement a time based system for this
 }
@@ -176,16 +196,20 @@ this.timeSpawn=function(dt){
 	{
 
  		this.secondCounter=0;
+		this.turn= Math.floor(Math.random()*this.spawnPoints.length);
+		this.turnCounter=0;
 		this.spawnPoints.forEach(function(spawn)
 		{
-		//console.log(spawn[2]);
+		
 		if(--(spawn[2])<0)
 		{
 			
-				
+		if(this.turnCounter==this.turn){				
 		spawn[2]= this.minWait + (Math.random()* this.extraWait);
 		this.newPlat(spawn[0],spawn[1]); 
 
+		}
+		this.turnCounter++;
 		}
 	
 		}.bind(this) // SOMETHING NEW !!!
@@ -252,8 +276,8 @@ ScoreText.innerHTML="Score : "+0;
 
 //------------------INPUT
 var isDragging=false;
-document.onmousedown= function(){isDragging=true
-				
+document.onmousedown= function(){
+		isDragging=true
 				};
 document.onmouseup =function(event){
 if(isDragging&&!shotFrog)       // >>>>>>> isGrounded is needed so that frog is only launched when on a platform 
@@ -264,6 +288,17 @@ isDragging=false;
 shotFrog=true;
 }};
 document.onmousemove=function(event){
+if(!shotFrog&&isDragging){				
+force= frog.calVel(event.clientX,event.clientY);
+
+for(i=0;i<Guides.length;i++){
+Guides[i].x= (frog.x+frog.width/2)+(i*force[0]*100);
+
+Guides[i].y=(frog.y+frog.height/2) +(i*force[1]*100);
+
+
+}
+}
 
 }
 
@@ -281,6 +316,12 @@ var  counter=0;
 function update(dt){
 
 clearScene();// Comes Before the frog as it should drawn under the frog
+for(i=Plats.length-1;i>=0;i--){
+	plat=Plats[i];
+	move(plat,dt);
+	drawObj(plat);
+	freeMemory(i);
+}
 	if(shotFrog)
 	{	// When clicked and released the shotFrog is made true
 	move(frog,dt);
@@ -309,16 +350,14 @@ clearScene();// Comes Before the frog as it should drawn under the frog
 	isOutOfBounds();
 	}
 
-for(i=Plats.length-1;i>=0;i--){
-	plat=Plats[i];
-	move(plat,dt);
-	drawObj(plat);
-	freeMemory(i);
-}
+
 
 drawObj(frog);
 Spawns.timeSpawn(dt);
+for(i=0;i<Guides.length;i++){
+drawObj(Guides[i]);
 
+}
 }
 
 //-----------------------------INIT 2
@@ -327,6 +366,8 @@ var BackG= new _BackG();
 var Plats=[];
 var Spawns= new _Spawns();
 
+var Guides=[]; //<<Tweak this
+	initGuides(10);
 gameTheme= new sound("Purple Pardon.mp3");
 gameTheme.loop();
 splash=new sound("splash.mp3");
