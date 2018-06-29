@@ -92,7 +92,7 @@ this.image="plat_1.png";
 function initGuides(length){
 for(i=0;i<length;i++)
 {
-Guides.push(new _Guide(0,0));
+Guides.push(new _Guide(-100,-100));
 }
 
 }
@@ -291,16 +291,25 @@ if(isDragging&&!shotFrog)       // >>>>>>> isGrounded is needed so that frog is 
 frog.calVel(event.clientX,event.clientY);
 isDragging=false;
 shotFrog=true;
-}};
+jump.play();
+}
+for(i=0;i<Guides.length;i++){
+Guides[i].x=-100; // So it is out of the viewport of the Player
+
+Guides[i].y=-100;
+
+}
+
+
+};
 document.onmousemove=function(event){
 if(!shotFrog&&isDragging){				
 force= frog.calVel(event.clientX,event.clientY);
 
 for(i=0;i<Guides.length;i++){
-Guides[i].x= (frog.x+frog.width/2)+(i*force[0]*100);
+Guides[i].x= (frog.x+frog.width/2)+((i+1)*force[0]*100);
 
-Guides[i].y=(frog.y+frog.height/2) +(i*force[1]*100);
-
+Guides[i].y=(frog.y+frog.height/2) +((i+1)*force[1]*100);
 
 }
 }
@@ -376,6 +385,6 @@ var Guides=[]; //<<Tweak this
 gameTheme= new sound("Purple Pardon.mp3");
 gameTheme.loop();
 splash=new sound("splash.mp3");
-stick = new sound("splash.mp3");
-
+stick = new sound("Stick.wav");
+jump = new sound("Jump.wav");
 Restart();
