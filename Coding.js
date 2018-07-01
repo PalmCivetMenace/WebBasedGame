@@ -9,6 +9,8 @@ var numberOfPlats=3;
 var Score;
 const ScoreText=document.getElementById("Score");
 ScoreText.style.left=-canvas.width/2+60; //<< HARD coded in the px val
+retry.style.top=canvas.height/2;
+retry.style.left=canvas.width*1.5;
 //-----------------OBJECT CREATION
 function _frog(w,h){
 
@@ -85,8 +87,8 @@ this.Vely=this.minVely+(this.increment*Math.random());
 function _Guide(x,y){
 this.x=x;
 this.y=y;
-this.width=10;
-this.height=10;
+this.width=5;
+this.height=5;
 this.image="bubble.png";
 }
 function initGuides(length){
@@ -157,11 +159,24 @@ function GameOver(){
 
 
 splash.play();
+
 isGameOver=true;
 retry.style.display="block";
-
+clearScene();
 
 }
+function gameOverScreen(){
+
+this.image="plat_1.png";
+this.height=canvas.height;
+this.width=canvas.width;
+this.x=0;
+this.y=0;
+
+drawObj(this);
+
+}
+
 //--------------- RESTART GAME
 
 
@@ -191,8 +206,8 @@ this.spawnPoints=[];
 		
 	}
 this.secondCounter=0;
-this.minWait=2;
-this.extraWait=1;
+this.minWait=3;
+this.extraWait=2;
 this.timeSpawn=function(dt){
 	this.secondCounter+=dt
 	if(this.secondCounter>1000)
@@ -280,12 +295,13 @@ ScoreText.innerHTML="Score : "+0;
 //------------------INPUT
 var isDragging=false;
 document.onmousedown= function(event){
-
-		isDragging=true;
-
+		if(!isGameOver)
+		{isDragging=true;
+		
 		frog.savedX=frog.x;
 
 		frog.savedY=frog.y;//This is so that the guiding does change when the frog goes down
+		}
 
 				};
 document.onmouseup =function(event){
@@ -322,11 +338,16 @@ Guides[i].y=(frog.y+frog.height/2) +((i+1)*force[1]*100);
 
 //------------------UPDATE
 function deltaTimeCal(timeStamp){
+	if(!isGameOver){
 	var dt=timeStamp-lastRender;
 	update(dt);
 	lastRender=timeStamp;
-	if(!isGameOver){
+	
+
 	window.requestAnimationFrame(deltaTimeCal);
+	}
+	else{
+		gameOverScreen();	
 	}
 }
 var waitTimer=10;

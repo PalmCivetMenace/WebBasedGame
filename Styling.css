@@ -17,3 +17,10 @@ width:100%;
 
 z-index:2;
 }
+#Retry{
+position:absolute;
+z-index:3;
+width:10vw;
+background-color:#111;
+color:#eee;
+}
