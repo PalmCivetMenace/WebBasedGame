@@ -2,19 +2,34 @@
 const canvas= document.getElementById("Scene");
 const scene= canvas.getContext('2d');
 const retry = document.getElementById("Retry");
+
+const ScoreText=document.getElementById("Score");
 const playBtn= document.getElementById('Play');
+const TutBtn= document.getElementById('Tutorial');
+const TutImg=document.getElementById('TutImg');
+
+
 var isGamerOver=false;
 var lastRender=0;
 var shotFrog=false;
 var numberOfPlats=3;
 var Score;
-const ScoreText=document.getElementById("Score");
+
 ScoreText.style.left=-canvas.width/2+60; //<< HARD coded in the px val
 
+
 retry.style.top=canvas.height/2;
+
+
 playBtn.style.top=canvas.height/2;
 
-playBtn.style.left=canvas.width*1.2;
+TutBtn.style.top=canvas.height*.75;
+
+TutBtn.style.left=canvas.width*1.5;
+
+TutImg.style.left=document.body.clientWidth/2-canvas.width/2;
+
+playBtn.style.left=canvas.width*1.5;
 retry.style.left=canvas.width*1.5;
 //-----------------OBJECT CREATION
 function _frog(w,h){
@@ -191,10 +206,13 @@ drawObj(this);
 
 //--------------- RESTART GAME
 
-
 function Restart(){
 retry.style.display="none";
 playBtn.style.display="none";
+TutBtn.style.display="none";
+TutImg.style.display="none"
+
+
 isGameOver=false;
 frog.x=canvas.width/2-frog.width/2;
 frog.y=canvas.height/2;
@@ -205,7 +223,25 @@ lastRender=0;
 ResetScore();
 requestAnimationFrame(deltaTimeCal);//>>> Implement a time based system for this
 }
+//------------- SHOW TUTORIAL
+function runTutorial(){
 
+playBtn.style.top=10;
+
+TutBtn.style.display="none";
+TutImg.style.display="block";
+}
+//------------- SHOW MAIN MENU
+function showMainMenu(){
+
+clearScene();
+playBtn.style.top=canvas.height/2;
+retry.style.display="none";
+playBtn.style.display="block";
+TutBtn.style.display="block";
+
+
+}
 //--------------SPAWN PLATS
 
 function _Spawns(){
@@ -281,7 +317,7 @@ scene.drawImage(img,obj.x,obj.y,obj.width,obj.height);
 img.src=obj.image;
 }
 function drawObj(obj){
-console.log(obj.image);
+//console.log(obj.image);
 scene.drawImage(obj.img,obj.x,obj.y,obj.width,obj.height);
 
 obj.img.src=obj.image;
@@ -432,10 +468,11 @@ var Plats=[];
 var Spawns= new _Spawns();
 
 var Guides=[]; //<<Tweak this
-	initGuides(10);
+initGuides(10);
 gameTheme= new sound("Purple Pardon.mp3");
 gameTheme.loop();
 splash=new sound("splash.mp3");
 stick = new sound("Stick.wav");
 jump = new sound("Jump.wav");
-Restart();
+
+showMainMenu();
