@@ -2,6 +2,7 @@
 const canvas= document.getElementById("Scene");
 const scene= canvas.getContext('2d');
 const retry = document.getElementById("Retry");
+const playBtn= document.getElementById('Play');
 var isGamerOver=false;
 var lastRender=0;
 var shotFrog=false;
@@ -9,7 +10,11 @@ var numberOfPlats=3;
 var Score;
 const ScoreText=document.getElementById("Score");
 ScoreText.style.left=-canvas.width/2+60; //<< HARD coded in the px val
+
 retry.style.top=canvas.height/2;
+playBtn.style.top=canvas.height/2;
+
+playBtn.style.left=canvas.width*1.2;
 retry.style.left=canvas.width*1.5;
 //-----------------OBJECT CREATION
 function _frog(w,h){
@@ -40,6 +45,7 @@ return [this.Velx,this.Vely];
 this.folVelx=0;
 this.folVely=0;
 this.resis=.01;
+this.img = new Image();
 }
 
 
@@ -51,6 +57,7 @@ this.image= "BackG.png";
 this.x=0;
 this.y=0;
 
+this.img = new Image();
 }
 
 function _Plat(x,y){
@@ -68,7 +75,9 @@ var platforms=[
 
 // Explaination = [width:20,height:100,image:"plat_2.png"] 
 
-var randplat= Math.floor(Math.random()*platforms.length);
+this.img = new Image();
+
+var randplat= Math.floor(rand(0,platforms.length));
 
 this.width=platforms[randplat][0];
 this.height=platforms[randplat][1];
@@ -79,8 +88,8 @@ this.y=y;
 
 this.Velx=0;
 this.minVely=0.05; // increase with player Progress
-this.increment=0.032;
-this.Vely=this.minVely+(this.increment*Math.random());
+this.maxVely=0.09;
+this.Vely=rand(this.minVely,this.maxVely);
 
 }
 //----------- GUIDE
@@ -90,12 +99,14 @@ this.y=y;
 this.width=5;
 this.height=5;
 this.image="bubble.png";
+this.img=new Image();
 }
 function initGuides(length){
 for(i=0;i<length;i++)
 {
 Guides.push(new _Guide(-100,-100));
 }
+
 
 }
 //------------- AUDIO
@@ -167,13 +178,14 @@ clearScene();
 }
 function gameOverScreen(){
 
-this.image="plat_1.png";
+this.image="gameOverImg.png";
 this.height=canvas.height;
 this.width=canvas.width;
 this.x=0;
 this.y=0;
-
+this.img=new Image();
 drawObj(this);
+
 
 }
 
@@ -182,6 +194,7 @@ drawObj(this);
 
 function Restart(){
 retry.style.display="none";
+playBtn.style.display="none";
 isGameOver=false;
 frog.x=canvas.width/2-frog.width/2;
 frog.y=canvas.height/2;
@@ -207,14 +220,14 @@ this.spawnPoints=[];
 	}
 this.secondCounter=0;
 this.minWait=3;
-this.extraWait=2;
+this.maxWait=2;
 this.timeSpawn=function(dt){
 	this.secondCounter+=dt
 	if(this.secondCounter>1000)
 	{
 
  		this.secondCounter=0;
-		this.turn= Math.floor(Math.random()*this.spawnPoints.length);
+		this.turn= Math.floor(rand(0,this.spawnPoints.length));
 		this.turnCounter=0;
 		this.spawnPoints.forEach(function(spawn)
 		{
@@ -223,7 +236,7 @@ this.timeSpawn=function(dt){
 		{
 			
 		if(this.turnCounter==this.turn){				
-		spawn[2]= this.minWait + (Math.random()* this.extraWait);
+		spawn[2]= rand(this.minWait,this.maxWait);
 		this.newPlat(spawn[0],spawn[1]); 
 
 		}
@@ -250,8 +263,14 @@ Plats.splice(i,1);
 
 
 }
+//--------------RANDOM
+
+function rand(min,max){
+	range=max-min;
+return (min+Math.random()*range);
+}
 //-------------- RENDER STUFF
-function drawObj(obj){
+function drawObjINIT(obj){
 
 var img = new Image();
 img.onload=function(){
@@ -260,6 +279,13 @@ scene.drawImage(img,obj.x,obj.y,obj.width,obj.height);
 }
 
 img.src=obj.image;
+}
+function drawObj(obj){
+console.log(obj.image);
+scene.drawImage(obj.img,obj.x,obj.y,obj.width,obj.height);
+
+obj.img.src=obj.image;
+
 }
 
 function clearScene(){ // Simply Redraws the background
