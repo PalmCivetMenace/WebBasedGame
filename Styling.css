@@ -25,6 +25,7 @@ background-color:#111;
 color:#eee;
 }
 #Play{
+
 position:absolute;
 z-index:3;
 width:10vw;
@@ -48,5 +49,13 @@ position:absolute;
 z-index:3;
 top:0;
 }
-
-
+#LevelCount{
+z-index:3;
+font-size:30vh;
+}
+.centerUI{
+position:absolute;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+}

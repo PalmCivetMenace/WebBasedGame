@@ -8,7 +8,8 @@ const playBtn= document.getElementById('Play');
 const TutBtn= document.getElementById('Tutorial');
 const TutImg=document.getElementById('TutImg');
 
-
+var LevelCounter=document.getElementById("LevelCount");
+var level=1;
 var isGamerOver=false;
 var lastRender=0;
 var shotFrog=false;
@@ -25,14 +26,12 @@ playBtn.style.top=canvas.height/2;
 
 TutBtn.style.top=canvas.height*.75;
 
-TutBtn.style.left=document.body.clientWidth/2;
-
-
 TutImg.style.left=document.body.clientWidth/2-canvas.width/2;
-
+/*TutBtn.style.left=document.body.clientWidth/2;
 playBtn.style.left=document.body.clientWidth/2;
 
 retry.style.left=document.body.clientWidth/2;
+*/
 //-----------------OBJECT CREATION
 function _frog(w,h){
 
@@ -77,12 +76,9 @@ this.y=0;
 this.img = new Image();
 }
 
-function _Plat(x,y){
-
+function _Plat(x,y,Vely){
 
 this.floating=true;
-
-
 
 var platforms=[
 [65,45,"plat_1.png"],
@@ -101,12 +97,9 @@ this.height=platforms[randplat][1];
 this.image=platforms[randplat][2];
 this.x=x-this.width/2;
 this.y=y;
-
-
 this.Velx=0;
-this.minVely=0.05; // increase with player Progress
-this.maxVely=0.09;
-this.Vely=rand(this.minVely,this.maxVely);
+this.Vely=Vely;
+
 
 }
 //----------- GUIDE
@@ -204,16 +197,36 @@ this.show=function(){
 drawObjINIT(this);
 }
 }
+//--------------- LEVEL TRANSITION
+
+function newLevel(){
+console.log("YEEP");
+Spawns.Faster();
+level++;
+LevelCounter.innerHTML=level.toString();
+maxLevelScore*=2;
+showLevel=true;
+}
+
+function opacity(element,val){
+element.style.opacity=val;
+}
+function ResetLevel()
+{
+level=1;
+LevelCounter.innerHTML=level.toString();
+}
 
 //--------------- RESTART GAME
 
 function Restart(){
-retry.style.display="none";
-playBtn.style.display="none";
-TutBtn.style.display="none";
-TutImg.style.display="none"
 
-
+hideUI(retry);
+hideUI(playBtn);
+hideUI(TutBtn);
+hideUI(TutImg);
+unhideUI(LevelCounter);
+showLevel=true;
 isGameOver=false;
 frog.x=canvas.width/2-frog.width/2;
 frog.y=canvas.height/2;
@@ -222,25 +235,25 @@ frog.folVely=0;
 shotFrog=false; // this is only false at initialization
 lastRender=0;
 ResetScore();
+ResetLevel();
+Spawns.ResetSpeed();
 requestAnimationFrame(deltaTimeCal);//>>> Implement a time based system for this
 }
 //------------- SHOW TUTORIAL
 function runTutorial(){
 
 playBtn.style.top=10;
-
-TutBtn.style.display="none";
-TutImg.style.display="block";
+hideUI(TutBtn);
+unhideUI(TutImg);
 }
 //------------- SHOW MAIN MENU
 function showMainMenu(){
 
 clearScene();
 playBtn.style.top=canvas.height/2;
-retry.style.display="none";
-playBtn.style.display="block";
-TutBtn.style.display="block";
-
+hideUI(retry);
+unhideUI(playBtn);
+unhideUI(TutBtn);
 
 }
 //--------------SPAWN PLATS
@@ -258,6 +271,10 @@ this.spawnPoints=[];
 this.secondCounter=0;
 this.minWait=3;
 this.maxWait=2;
+
+this.minVely; // increase with player Progress
+this.maxVely;
+
 this.timeSpawn=function(dt){
 	this.secondCounter+=dt
 	if(this.secondCounter>1000)
@@ -274,8 +291,8 @@ this.timeSpawn=function(dt){
 			
 		if(this.turnCounter==this.turn){				
 		spawn[2]= rand(this.minWait,this.maxWait);
-		this.newPlat(spawn[0],spawn[1]); 
-
+		this.newPlat(spawn[0],spawn[1],rand(this.minVely,this.maxVely));
+		//console.log(Plats);
 		}
 		this.turnCounter++;
 		}
@@ -284,11 +301,24 @@ this.timeSpawn=function(dt){
 		);
 	}
 }
+	this.Faster=function(){
 
-	this.newPlat=function(x,y){
-	Plats.push(new _Plat(x,y));
+	this.minVely+=this.minVely*.2;	
+
+	this.maxVely+=this.maxVely*.2;	
+	}
+	this.ResetSpeed=function()
+	{
+	this.minVely=0.05; // increase with player Progress
+	this.maxVely=0.09;
+	}
+
+	this.newPlat=function(x,y,Vely){
+	Plats.push(new _Plat(x,y,Vely));
 
 	}	
+
+this.ResetSpeed();
 }
 //--------------MEMORY MANAGEMENT
 function freeMemory( i){
@@ -415,8 +445,28 @@ function deltaTimeCal(timeStamp){
 }
 var waitTimer=10;
 var  counter=0;
+var op=0;
 function update(dt){
+if(showLevel){
+op+=.01;
+opacity(LevelCounter,op);
+if(op>1){
+	hideLevel=true;
+	showLevel=false;
+	}
+}
+if(hideLevel){
+op-=.01;
+opacity(LevelCounter,op);
+if(op<0){
+hideLevel=false;
+}
+}
 
+
+if(Score>maxLevelScore){
+newLevel();
+}
 clearScene();// Comes Before the frog as it should drawn under the frog
 for(i=Plats.length-1;i>=0;i--){
 	plat=Plats[i];
@@ -461,18 +511,24 @@ drawObj(Guides[i]);
 
 }
 }
-//-----------------------------CENTERUI
-	function CenterUI(element){
+//-----------------------------UI
+function hideUI(element){
+element.style.display="none";
+}
+function unhideUI(element){
+element.style.display="block";
+}
 
-	}
+
+
 //-----------------------------INIT 2
 var frog= new _frog(64,48);
 var BackG= new _BackG();
 var Plats=[];
 var Spawns= new _Spawns();
-
 var Guides=[]; //<<Tweak this
 initGuides(10);
+var maxLevelScore=5;
 var gameOverScreen= new _gameOverScreen();
 gameTheme= new sound("Purple Pardon.mp3");
 gameTheme.loop();
@@ -480,4 +536,6 @@ splash=new sound("splash.mp3");
 stick = new sound("Stick.wav");
 jump = new sound("Jump.wav");
 isGameOver=false;
+showLevel=true;
+hideLevel=false;
 showMainMenu();
