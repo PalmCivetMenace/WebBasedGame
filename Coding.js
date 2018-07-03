@@ -25,12 +25,14 @@ playBtn.style.top=canvas.height/2;
 
 TutBtn.style.top=canvas.height*.75;
 
-TutBtn.style.left=canvas.width*1.5;
+TutBtn.style.left=document.body.clientWidth/2;
+
 
 TutImg.style.left=document.body.clientWidth/2-canvas.width/2;
 
-playBtn.style.left=canvas.width*1.5;
-retry.style.left=canvas.width*1.5;
+playBtn.style.left=document.body.clientWidth/2;
+
+retry.style.left=document.body.clientWidth/2;
 //-----------------OBJECT CREATION
 function _frog(w,h){
 
@@ -186,12 +188,11 @@ function GameOver(){
 
 splash.play();
 
-isGameOver=true;
+isGameOver=true; // gameOverScreen is checked in deltaTimeCal
 retry.style.display="block";
-clearScene();
 
 }
-function gameOverScreen(){
+function _gameOverScreen(){
 
 this.image="gameOverImg.png";
 this.height=canvas.height;
@@ -199,9 +200,9 @@ this.width=canvas.width;
 this.x=0;
 this.y=0;
 this.img=new Image();
-drawObj(this);
-
-
+this.show=function(){
+drawObjINIT(this);
+}
 }
 
 //--------------- RESTART GAME
@@ -306,7 +307,7 @@ function rand(min,max){
 return (min+Math.random()*range);
 }
 //-------------- RENDER STUFF
-function drawObjINIT(obj){
+function drawObjINIT(obj){ // SLOW METHOD (Some functions still uses this)
 
 var img = new Image();
 img.onload=function(){
@@ -316,7 +317,7 @@ scene.drawImage(img,obj.x,obj.y,obj.width,obj.height);
 
 img.src=obj.image;
 }
-function drawObj(obj){
+function drawObj(obj){ 		//FASTER METHOD
 //console.log(obj.image);
 scene.drawImage(obj.img,obj.x,obj.y,obj.width,obj.height);
 
@@ -409,7 +410,7 @@ function deltaTimeCal(timeStamp){
 	window.requestAnimationFrame(deltaTimeCal);
 	}
 	else{
-		gameOverScreen();	
+		gameOverScreen.show();	
 	}
 }
 var waitTimer=10;
@@ -460,7 +461,10 @@ drawObj(Guides[i]);
 
 }
 }
+//-----------------------------CENTERUI
+	function CenterUI(element){
 
+	}
 //-----------------------------INIT 2
 var frog= new _frog(64,48);
 var BackG= new _BackG();
@@ -469,10 +473,11 @@ var Spawns= new _Spawns();
 
 var Guides=[]; //<<Tweak this
 initGuides(10);
+var gameOverScreen= new _gameOverScreen();
 gameTheme= new sound("Purple Pardon.mp3");
 gameTheme.loop();
 splash=new sound("splash.mp3");
 stick = new sound("Stick.wav");
 jump = new sound("Jump.wav");
-
+isGameOver=false;
 showMainMenu();
