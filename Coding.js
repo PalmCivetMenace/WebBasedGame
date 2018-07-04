@@ -177,7 +177,7 @@ GameOver();
 
 }}
 function GameOver(){
-
+hideUI(LevelCounter);
 
 splash.play();
 
@@ -200,6 +200,7 @@ drawObjINIT(this);
 //--------------- LEVEL TRANSITION
 
 function newLevel(){
+	unhideUI(LevelCounter);
 console.log("YEEP");
 Spawns.Faster();
 level++;
