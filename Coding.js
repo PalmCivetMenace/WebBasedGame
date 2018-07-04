@@ -213,6 +213,7 @@ element.style.opacity=val;
 }
 function ResetLevel()
 {
+maxLevelScore=5;
 level=1;
 LevelCounter.innerHTML=level.toString();
 }
