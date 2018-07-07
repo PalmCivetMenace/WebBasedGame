@@ -1,3 +1,4 @@
+
 ///-------------------INIT 1
 const canvas= document.getElementById("Scene");
 const scene= canvas.getContext('2d');
@@ -29,7 +30,6 @@ TutBtn.style.top=canvas.height*.75;
 TutImg.style.left=document.body.clientWidth/2-canvas.width/2;
 /*TutBtn.style.left=document.body.clientWidth/2;
 playBtn.style.left=document.body.clientWidth/2;
-
 retry.style.left=document.body.clientWidth/2;
 */
 //-----------------OBJECT CREATION
@@ -76,7 +76,7 @@ this.y=0;
 this.img = new Image();
 }
 
-function _Plat(x,y,Vely){
+function _Plat(x,y,Vely,Velx){
 
 this.floating=true;
 
@@ -177,7 +177,7 @@ GameOver();
 
 }}
 function GameOver(){
-
+hideUI(LevelCounter);
 
 splash.play();
 
@@ -200,6 +200,7 @@ drawObjINIT(this);
 //--------------- LEVEL TRANSITION
 
 function newLevel(){
+	unhideUI(LevelCounter);
 console.log("YEEP");
 Spawns.Faster();
 level++;
@@ -213,6 +214,7 @@ element.style.opacity=val;
 }
 function ResetLevel()
 {
+maxLevelScore=5;
 level=1;
 LevelCounter.innerHTML=level.toString();
 }
@@ -361,9 +363,9 @@ function clearScene(){ // Simply Redraws the background
 }
 //-------------COLLISION DETECTION
 
-function isColliding(a,b){
+function isColliding(a,b){   // b=frog, a=plat(leaf)
 
-if((a.x+a.width/2)>b.x && (a.x+a.width/2)<(b.x+b.width)&&(a.y+a.height)>b.y && a.y<(b.y+b.height)&&a.floating==true ){
+if((a.x+a.width/2)>b.x && (a.x+a.width/2)<(b.x+b.width)&&(a.y+a.height/2)>b.y && a.y<(b.y+b.height)&&a.floating==true ){
 AddScore();
 stick.play();
 return true;
