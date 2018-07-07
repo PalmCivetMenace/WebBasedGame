@@ -1,11 +1,12 @@
 #container
 {
+width:300;
+height:600;
 position:relative;
 }
 
 #Scene{
 background-color:#ddd;
-
 z-index:1;
 
 }
@@ -17,45 +18,63 @@ width:100%;
 
 z-index:2;
 }
-#Retry{
+.basicBtn
+{
 position:absolute;
 z-index:3;
-width:10vw;
+width:8vw;
 background-color:#111;
 color:#eee;
+}
+#Retry{
 }
 #Play{
 
-position:absolute;
-z-index:3;
-width:10vw;
 
-background-color:#111;
-color:#eee;
 }
 
 #Tutorial{
-position:absolute;
-z-index:3;
-width:10vw;
-
-background-color:#111;
-color:#eee;
-
+top:60%;
 }
+#NextImg{
+left:80%;
+}
+#PrevImg{
+left:20%;
+}
+
+
 
 #TutImg{
 position:absolute;
 z-index:3;
-top:0;
+
 }
 #LevelCount{
 z-index:3;
 font-size:30vh;
 }
+
 .centerUI{
 position:absolute;
 top: 50%;
 left: 50%;
 transform: translate(-50%, -50%);
+}
+
+.bottom{
+position:absolute;
+top: 95%;
+
+transform: translate(-50%, -50%);
+}
+
+
+.unselectable {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }

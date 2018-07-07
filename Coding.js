@@ -9,6 +9,10 @@ const playBtn= document.getElementById('Play');
 const TutBtn= document.getElementById('Tutorial');
 const TutImg=document.getElementById('TutImg');
 
+
+const nextImg=document.getElementById('NextImg');
+const prevImg=document.getElementById('PrevImg');
+
 var LevelCounter=document.getElementById("LevelCount");
 var level=1;
 var isGamerOver=false;
@@ -27,7 +31,7 @@ playBtn.style.top=canvas.height/2;
 
 TutBtn.style.top=canvas.height*.75;
 
-TutImg.style.left=document.body.clientWidth/2-canvas.width/2;
+//TutImg.style.left=document.body.clientWidth/2-canvas.width/2;
 /*TutBtn.style.left=document.body.clientWidth/2;
 playBtn.style.left=document.body.clientWidth/2;
 retry.style.left=document.body.clientWidth/2;
@@ -223,6 +227,8 @@ LevelCounter.innerHTML=level.toString();
 
 function Restart(){
 
+hideUI(nextImg);
+hideUI(prevImg);
 hideUI(retry);
 hideUI(playBtn);
 hideUI(TutBtn);
@@ -244,13 +250,52 @@ requestAnimationFrame(deltaTimeCal);//>>> Implement a time based system for this
 //------------- SHOW TUTORIAL
 function runTutorial(){
 
+unhideUI(nextImg);
+unhideUI(prevImg);
 playBtn.style.top=10;
 hideUI(TutBtn);
 unhideUI(TutImg);
 }
+
+function TutImgSrc(){
+	
+	
+ 	this.TutImageSrc=["tutimg_1.png","tutimg_2.png","tutimg_3.png","nice.gif"];
+
+	this.imgNum=0;
+
+	this.Display=function(){
+	
+	TutImg.src=this.TutImageSrc[this.imgNum];
+
+	}
+	
+	this.Display();
+	
+	this.ChangeImg=function(set){		
+	
+		if(set<0){
+		if((this.imgNum!=0)){
+
+
+		this.imgNum+=set;
+		this.Display();
+		}
+		}
+		else {
+		if(this.imgNum<this.TutImageSrc.length-1)
+		{console.log("YEEP");
+		this.imgNum+=set;
+		this.Display();
+		}
+		}
+	}		
+}
 //------------- SHOW MAIN MENU
 function showMainMenu(){
 
+hideUI(nextImg);
+hideUI(prevImg);
 clearScene();
 playBtn.style.top=canvas.height/2;
 hideUI(retry);
@@ -532,6 +577,7 @@ var Guides=[]; //<<Tweak this
 initGuides(10);
 var maxLevelScore=5;
 var gameOverScreen= new _gameOverScreen();
+var TutImgManager= new TutImgSrc(); 
 gameTheme= new sound("Purple Pardon.mp3");
 gameTheme.loop();
 splash=new sound("splash.mp3");
