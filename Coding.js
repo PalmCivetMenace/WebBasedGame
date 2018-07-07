@@ -76,7 +76,7 @@ this.y=0;
 this.img = new Image();
 }
 
-function _Plat(x,y,Vely){
+function _Plat(x,y,Vely,Velx){
 
 this.floating=true;
 
@@ -363,9 +363,9 @@ function clearScene(){ // Simply Redraws the background
 }
 //-------------COLLISION DETECTION
 
-function isColliding(a,b){
+function isColliding(a,b){   // b=frog, a=plat(leaf)
 
-if((a.x+a.width/2)>b.x && (a.x+a.width/2)<(b.x+b.width)&&(a.y+a.height)>b.y && a.y<(b.y+b.height)&&a.floating==true ){
+if((a.x+a.width/2)>b.x && (a.x+a.width/2)<(b.x+b.width)&&(a.y+a.height/2)>b.y && a.y<(b.y+b.height)&&a.floating==true ){
 AddScore();
 stick.play();
 return true;
