@@ -6,7 +6,7 @@ position:absolute;
 }
 
 #Scene{
-background-color:#ddd;
+
 z-index:1;
 
 }
@@ -23,9 +23,19 @@ z-index:2;
 position:absolute;
 z-index:3;
 width:100px;
+font-size:30px;
+background-color:rgba(0,0,0,0);
+color:#111;
 
-color:black;
-border:none;
+border:solid 2px #111;
+
+}
+.basicBtn:hover
+{
+
+color:#eee;
+background-color:#111;
+
 }
 #Retry{
 }
@@ -35,13 +45,18 @@ border:none;
 }
 
 #Tutorial{
-top:60%;
+
+font-size:15px;
+top:95%;
 }
 #NextImg{
 left:80%;
+
+font-size:15px;
 }
 #PrevImg{
 left:20%;
+font-size:15px;
 }
 
 

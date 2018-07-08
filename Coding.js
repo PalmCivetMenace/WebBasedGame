@@ -13,6 +13,11 @@ const Logo = document.getElementById("Logo");
 const nextImg=document.getElementById('NextImg');
 const prevImg=document.getElementById('PrevImg');
 
+var highScore=localStorage.getItem("HighScore");
+if(highScore==null){// This runs only once .. The first time the game is opened
+
+localStorage.setItem("HighScore",0);
+}
 var LevelCounter=document.getElementById("LevelCount");
 var level=1;
 var isGamerOver=false;
@@ -27,9 +32,9 @@ ScoreText.style.left=-canvas.width/2+60; //<< HARD coded in the px val
 retry.style.top=canvas.height/2;
 
 
-playBtn.style.top=canvas.height/2;
 
-TutBtn.style.top=canvas.height*.75;
+
+
 
 //TutImg.style.left=document.body.clientWidth/2-canvas.width/2;
 /*TutBtn.style.left=document.body.clientWidth/2;
@@ -187,7 +192,7 @@ splash.play();
 
 isGameOver=true; // gameOverScreen is checked in deltaTimeCal
 retry.style.display="block";
-
+FinalScoreDisplay(isNewHighScore());
 }
 function _gameOverScreen(){
 
@@ -201,6 +206,7 @@ this.show=function(){
 drawObjINIT(this);
 }
 }
+
 //--------------- LEVEL TRANSITION
 
 function newLevel(){
@@ -441,6 +447,31 @@ ScoreText.innerHTML="Score : "+0;
 
 }
 
+function isNewHighScore(){
+
+if(Score>localStorage.getItem("HighScore")){
+console.log("New High Score");
+localStorage.setItem("HighScore",Score);
+highScore=Score;
+return true;
+}
+else {
+return false;
+}
+
+}
+
+function FinalScoreDisplay(isHighScore){
+if(isHighScore){
+ScoreText.innerHTML="<b>New</b> High Score <br> "+ Score;
+}
+else{
+ScoreText.innerHTML="Your Score is "+Score+"<br> High Score  is "+ highScore;
+}
+
+
+}
+
 //------------------INPUT
 var isDragging=false;
 document.onmousedown= function(event){
@@ -516,6 +547,7 @@ op-=.01;
 opacity(LevelCounter,op);
 if(op<0){
 hideLevel=false;
+
 }
 }
 
