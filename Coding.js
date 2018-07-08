@@ -9,7 +9,7 @@ const playBtn= document.getElementById('Play');
 const TutBtn= document.getElementById('Tutorial');
 const TutImg=document.getElementById('TutImg');
 
-
+const Logo = document.getElementById("Logo");
 const nextImg=document.getElementById('NextImg');
 const prevImg=document.getElementById('PrevImg');
 
@@ -227,12 +227,16 @@ LevelCounter.innerHTML=level.toString();
 
 function Restart(){
 
+
+
 hideUI(nextImg);
 hideUI(prevImg);
 hideUI(retry);
 hideUI(playBtn);
 hideUI(TutBtn);
 hideUI(TutImg);
+
+unhideUI(ScoreText);
 unhideUI(LevelCounter);
 showLevel=true;
 isGameOver=false;
@@ -293,7 +297,7 @@ function TutImgSrc(){
 }
 //------------- SHOW MAIN MENU
 function showMainMenu(){
-
+hideUI(ScoreText);
 hideUI(nextImg);
 hideUI(prevImg);
 clearScene();
@@ -511,7 +515,7 @@ hideLevel=false;
 }
 
 
-if(Score>maxLevelScore){
+if(Score>=maxLevelScore){
 newLevel();
 }
 clearScene();// Comes Before the frog as it should drawn under the frog
@@ -586,4 +590,11 @@ jump = new sound("Jump.wav");
 isGameOver=false;
 showLevel=true;
 hideLevel=false;
-showMainMenu();
+//------------------------ LOGO LOAD
+function LogoEnd(){
+setTimeout(function () {
+       showMainMenu();
+    }, 4000);
+}
+//console.log(Logo.style.animation-duration);
+LogoEnd();

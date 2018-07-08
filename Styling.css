@@ -1,6 +1,6 @@
 #container
 {
-width:300;
+width:350;
 height:600;
 position:relative;
 }
@@ -68,7 +68,19 @@ top: 95%;
 
 transform: translate(-50%, -50%);
 }
+#Logo{
+	opacity:0;
+    width: 100px;
+    height: 100px;
+    animation-name: fade;
+    animation-duration: 4s;  // This value was hard coded into JS
+}
 
+@keyframes fade {
+    0%{opacity: 0;}
+    50%{opacity:1;}
+	100%{opacity:0;}
+}
 
 .unselectable {
     -webkit-touch-callout: none;
@@ -78,3 +90,5 @@ transform: translate(-50%, -50%);
     -ms-user-select: none;
     user-select: none;
 }
+
+
