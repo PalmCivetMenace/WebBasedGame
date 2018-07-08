@@ -10,21 +10,33 @@
 	
 	<link rel="stylesheet" type="text/css" href="Styling.css" >
 	<body >
+		<center>
+		<table>
+			<tr>
+				<th>
+					<img id="BI" class="unselectable" src="BackImgMain1.png"></img>
+				</th>
 
-<center>
-<!--	<embed src="Brixton Purpose.mp3" autostart="true" loop="true"/> -->
-	<div id="container" class="centerUI">
-	<image  id="TutImg" src="nice.gif" class="centerUI" style="display:none;" alt="Tutorial GIF" width="350" height="600">
-	<canvas id="Scene"  width="350" height="600"></canvas>
-	<div id="Score" style="display:none" class="unselectable" >Score: 0</div>
-	</canvas>
-	<button class="centerUI basicBtn" style="display:none" id="Play" onclick="Restart();">Play</button>
-	<button style="display:none" class="centerUI basicBtn"id="Tutorial" onclick="runTutorial();">Tutorial</button>
-	
+				<td style="width:350px">
 
-<button class="basicBtn bottom" style="display:none" id="PrevImg" onclick="TutImgManager.ChangeImg(-1)">Previous</button>
-	<button class="basicBtn bottom" style="display:none"  id="NextImg" onclick="TutImgManager.ChangeImg(+1)">Next</button>
+					<!--	<embed src="Brixton Purpose.mp3" autostart="true" loop="true"/> -->
+					<div id="container" class="centerUI">
+						<image  id="TutImg" src="nice.gif" class="centerUI" style="display:none;" alt="Tutorial GIF" width="350" height="600">
+						<canvas id="Scene"  width="350" height="600"></canvas>
+							<div id="Score" style="display:none" class="unselectable" >Score: 0</div>
+						</canvas>
+						<button class="centerUI basicBtn" style="display:none" id="Play" onclick="Restart();">Play</button>
+						<button style="display:none" class="centerUI basicBtn"id="Tutorial" onclick="runTutorial();">Tutorial</button>
+						<button class="basicBtn bottom" style="display:none" id="PrevImg" onclick="TutImgManager.ChangeImg(-1)">Previous</button>
+						<button class="basicBtn bottom" style="display:none"  id="NextImg" onclick="TutImgManager.ChangeImg(+1)">Next</button>
+						<button style="display:none" id="Retry"  class="centerUI basicBtn" onclick="Restart();">Retry</button>
+						<p style="display:none" class="centerUI unselectable" id="LevelCount" >1</p>
+						<img id="Logo" class="centerUI unselectable" src="Logo.png"></img>
+ 					</div>
+					<script src="Coding.js"></script>
+				</td>
 
+<!--
 	<button style="display:none" id="Retry"  class="centerUI basicBtn" onclick="Restart();">Retry</button>
 	<p style="display:none" class="centerUI unselectable" id="LevelCount" >1</p>
 	<img id="Logo" class="centerUI unselectable" src="Logo.png"></img>
@@ -39,9 +51,18 @@
 	<br>	
 	Music From www.jukedeck.com
 	 </div> 
-	</div>
+	</div> -->
 	
-</center>
-	<script src="Coding.js"></script>
-</body>
+
+
+
+
+				<th>
+					<img id="BI" class="unselectable" src="BackImgMain2.png"></img>
+				</th>
+			</tr>
+		</table>
+		</center>
+	</body>
+
 </html>

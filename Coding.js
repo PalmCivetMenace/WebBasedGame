@@ -26,10 +26,10 @@ var shotFrog=false;
 var numberOfPlats=3;
 var Score;
 
-ScoreText.style.left=-canvas.width/2+60; //<< HARD coded in the px val
 
 
-retry.style.top=canvas.height/2;
+
+
 
 
 
