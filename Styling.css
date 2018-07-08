@@ -10,6 +10,18 @@ z-index:1;
 
 }
 #Score{
+font-size
+}
+.BigScore{
+left:40%;
+top:75%;
+font-size:30px;
+color:white;
+position:absolute;
+z-index:2;
+
+}
+.SmallScore{
 top:0;
 left:10px;
 position:absolute;
