@@ -70,8 +70,8 @@ transform: translate(-50%, -50%);
 }
 #Logo{
 	opacity:0;
-    width: 100px;
-    height: 100px;
+    width: 350px;
+    height: 600px;
     animation-name: fade;
     animation-duration: 4s;  // This value was hard coded into JS
 }
