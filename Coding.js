@@ -1,4 +1,3 @@
-
 ///-------------------INIT 1
 const canvas= document.getElementById("Scene");
 const scene= canvas.getContext('2d');
@@ -25,17 +24,6 @@ var lastRender=0;
 var shotFrog=false;
 var numberOfPlats=3;
 var Score;
-
-
-
-
-
-
-
-
-
-
-
 //TutImg.style.left=document.body.clientWidth/2-canvas.width/2;
 /*TutBtn.style.left=document.body.clientWidth/2;
 playBtn.style.left=document.body.clientWidth/2;
@@ -245,6 +233,7 @@ hideUI(TutImg);
 
 unhideUI(ScoreText);
 unhideUI(LevelCounter);
+ToggleScore(false);
 showLevel=true;
 isGameOver=false;
 frog.x=canvas.width/2-frog.width/2;
@@ -462,6 +451,8 @@ return false;
 }
 
 function FinalScoreDisplay(isHighScore){
+
+ToggleScore(true);
 if(isHighScore){
 ScoreText.innerHTML="<b>New</b> High Score <br> "+ Score;
 }
@@ -472,6 +463,25 @@ ScoreText.innerHTML="Your Score is "+Score+"<br> High Score  is "+ highScore;
 
 }
 
+function ToggleScore(isBig)
+{
+if(isBig)
+{
+
+
+ScoreText.classList.add("BigScore");
+
+ScoreText.classList.remove("SmallScore");
+}
+else 
+{
+
+ScoreText.classList.remove("centerUI");
+
+ScoreText.classList.remove("BigScore");
+ScoreText.classList.add("SmallScore");
+}
+}
 //------------------INPUT
 var isDragging=false;
 document.onmousedown= function(event){
