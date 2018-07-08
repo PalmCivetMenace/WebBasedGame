@@ -1,8 +1,12 @@
+body{
+background-image:url("plat_1.png");
+}
+
 #container
 {
 width:350;
 height:600;
-position:relative;
+position:absolute;
 }
 
 #Scene{
@@ -22,9 +26,10 @@ z-index:2;
 {
 position:absolute;
 z-index:3;
-width:8vw;
-background-color:#111;
-color:#eee;
+width:100px;
+
+color:black;
+border:none;
 }
 #Retry{
 }
