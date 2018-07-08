@@ -228,6 +228,7 @@ LevelCounter.innerHTML=level.toString();
 function Restart(){
 
 
+gameTheme.loop();
 
 hideUI(nextImg);
 hideUI(prevImg);
@@ -583,7 +584,6 @@ var maxLevelScore=5;
 var gameOverScreen= new _gameOverScreen();
 var TutImgManager= new TutImgSrc(); 
 gameTheme= new sound("Purple Pardon.mp3");
-gameTheme.loop();
 splash=new sound("splash.mp3");
 stick = new sound("Stick.wav");
 jump = new sound("Jump.wav");
@@ -592,9 +592,11 @@ showLevel=true;
 hideLevel=false;
 //------------------------ LOGO LOAD
 function LogoEnd(){
+//console.log(Logo.style.animationDuration);
 setTimeout(function () {
        showMainMenu();
-    }, 4000);
+	Logo.style.display="none";
+    },4000);
 }
 //console.log(Logo.style.animation-duration);
 LogoEnd();
