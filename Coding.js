@@ -306,7 +306,11 @@ playBtn.style.top=canvas.height/2;
 hideUI(retry);
 unhideUI(playBtn);
 unhideUI(TutBtn);
-
+img= new Image();
+img.onload=function(){
+scene.drawImage(img,0,0,canvas.width,canvas.height);
+}
+img.src="MenuBackG.png";
 }
 //--------------SPAWN PLATS
 
