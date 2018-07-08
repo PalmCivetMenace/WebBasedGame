@@ -271,7 +271,7 @@ unhideUI(TutImg);
 function TutImgSrc(){
 	
 	
- 	this.TutImageSrc=["tutimg_1.png","tutimg_2.png","tutimg_3.png","nice.gif"];
+ 	this.TutImageSrc=["TutImg_1.png","TutImg_2.png","TutImg_3.png","TutFinal.png"];
 
 	this.imgNum=0;
 
