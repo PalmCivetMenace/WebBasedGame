@@ -476,6 +476,7 @@ ScoreText.classList.remove("SmallScore");
 else 
 {
 
+ScoreText.classList.remove("centerUI");
 
 ScoreText.classList.remove("BigScore");
 ScoreText.classList.add("SmallScore");
