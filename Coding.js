@@ -13,8 +13,7 @@ const nextImg=document.getElementById('NextImg');
 const prevImg=document.getElementById('PrevImg');
 
 var highScore=localStorage.getItem("HighScore");
-if(highScore==null){// This runs only once .. The first time the game is opened
-
+if(highScore==null){	// This runs only once .. The first time the game is opened
 localStorage.setItem("HighScore",0);
 }
 var LevelCounter=document.getElementById("LevelCount");
@@ -146,35 +145,30 @@ function sound(src) {
 } 
 //--------------MOVE OBJECTS
 function move(obj,dt){
-
-
 obj.x+= obj.Velx*dt;
 obj.y+= obj.Vely*dt;
-
-
-
 }
+
 function follow(dt)
 {
-
 frog.x+=frog.folVelx*dt;
 frog.y+=frog.folVely*dt;
 }
+
 function airResis(){
 frog.Vely-=frog.Vely*frog.resis;
 frog.Velx-=frog.Velx*frog.resis;
-
-
 }
+
 //-------------- GAME OVER
 function isDrowned(Velx,Vely){
-if((Math.abs(Velx)<frog.DeathSpeed)&& (Math.abs(Vely)<frog.DeathSpeed) 
-){
+if((Math.abs(Velx)<frog.DeathSpeed)&& (Math.abs(Vely)<frog.DeathSpeed)){
 frog.Velx=0;
 frog.Vely=0;
 GameOver();
 }
 }
+
 function isOutOfBounds(){
 if(frog.x>canvas.width||(frog.x+frog.width)<0||(frog.y+frog.height)<0||frog.y>canvas.height){
 GameOver();
@@ -206,7 +200,6 @@ drawObjINIT(this);
 
 function newLevel(){
 	unhideUI(LevelCounter);
-console.log("YEEP");
 Spawns.Faster();
 level++;
 LevelCounter.innerHTML=level.toString();
@@ -217,6 +210,7 @@ showLevel=true;
 function opacity(element,val){
 element.style.opacity=val;
 }
+
 function ResetLevel()
 {
 maxLevelScore=5;
@@ -227,7 +221,6 @@ LevelCounter.innerHTML=level.toString();
 //--------------- RESTART GAME
 
 function Restart(){
-
 
 gameTheme.loop();
 
@@ -253,9 +246,9 @@ ResetScore();
 ResetLevel();
 Spawns.ResetSpeed();
 op=0;
-requestAnimationFrame(deltaTimeCal);//>>> Implement a time based system for this
-
+requestAnimationFrame(deltaTimeCal); // >>> Implement a time based system for this
 }
+
 //------------- SHOW TUTORIAL
 function runTutorial(){
 
@@ -286,20 +279,21 @@ function TutImgSrc(){
 		if(set<0){
 		if((this.imgNum!=0)){
 
-
 		this.imgNum+=set;
 		this.Display();
 		}
 		}
+
 		else {
 		if(this.imgNum<this.TutImageSrc.length-1)
-		{console.log("YEEP");
+		{
 		this.imgNum+=set;
 		this.Display();
 		}
 		}
 	}		
 }
+
 //------------- SHOW MAIN MENU
 function showMainMenu(){
 hideUI(ScoreText);
@@ -316,6 +310,7 @@ scene.drawImage(img,0,0,canvas.width,canvas.height);
 }
 img.src="MenuBackG.png";
 }
+
 //--------------SPAWN PLATS
 
 function _Spawns(){
@@ -343,6 +338,7 @@ this.timeSpawn=function(dt){
  		this.secondCounter=0;
 		this.turn= Math.floor(rand(0,this.spawnPoints.length));
 		this.turnCounter=0;
+
 		this.spawnPoints.forEach(function(spawn)
 		{
 		
@@ -377,36 +373,33 @@ this.timeSpawn=function(dt){
 	Plats.push(new _Plat(x,y,Vely));
 
 	}	
-
 this.ResetSpeed();
 }
+
 //--------------MEMORY MANAGEMENT
-function freeMemory( i){
+function freeMemory(i){ // deletes platform when it is no longer in view
 if(Plats[i].y>canvas.height)
 {
 Plats.splice(i,1);
-
+}
 }
 
-
-}
 //--------------RANDOM
-
 function rand(min,max){
 	range=max-min;
 return (min+Math.random()*range);
 }
+
 //-------------- RENDER STUFF
 function drawObjINIT(obj){ // SLOW METHOD (Some functions still uses this)
 
 var img = new Image();
 img.onload=function(){
 scene.drawImage(img,obj.x,obj.y,obj.width,obj.height);
-
 }
-
 img.src=obj.image;
 }
+
 function drawObj(obj){ 		//FASTER METHOD
 //console.log(obj.image);
 scene.drawImage(obj.img,obj.x,obj.y,obj.width,obj.height);
