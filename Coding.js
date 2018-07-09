@@ -78,7 +78,7 @@ function _Plat(x,y,Vely,Velx){
 this.floating=true;
 
 var platforms=[
-[65,45,"plat_1.png"],
+[65,46,"plat_2.png"],
 [60,47,"plat_2.png"],
 [44,28,"plat_3.png"],
 ];
@@ -96,6 +96,13 @@ this.x=x-this.width/2;
 this.y=y;
 this.Velx=0;
 this.Vely=Vely;
+
+this.FlipOver=function(){
+this.floating=false;
+this.image="flip.png";
+
+
+}
 
 
 }
@@ -245,7 +252,9 @@ lastRender=0;
 ResetScore();
 ResetLevel();
 Spawns.ResetSpeed();
+op=0;
 requestAnimationFrame(deltaTimeCal);//>>> Implement a time based system for this
+
 }
 //------------- SHOW TUTORIAL
 function runTutorial(){
@@ -469,8 +478,10 @@ if(isBig)
 {
 
 
+
 ScoreText.classList.add("BigScore");
 
+ScoreText.classList.add("centerUI");
 ScoreText.classList.remove("SmallScore");
 }
 else 
@@ -584,7 +595,7 @@ for(i=Plats.length-1;i>=0;i--){
 	{
 	if(isColliding(plat,frog)){
 	shotFrog=false;
-	plat.floating=false;
+	plat.FlipOver();
 	
 	frog.folVelx=plat.Velx; //So that the frog follows it
 	frog.folVely=plat.Vely;	

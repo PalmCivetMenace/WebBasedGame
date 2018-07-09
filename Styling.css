@@ -1,3 +1,6 @@
+body{
+
+}
 #container
 {
 width:350;
@@ -10,15 +13,17 @@ z-index:1;
 
 }
 #Score{
-font-size
+
 }
 .BigScore{
-left:40%;
-top:75%;
+
+top:60%;
 font-size:30px;
-color:white;
+color:#111;
+
 position:absolute;
 z-index:2;
+border:3px solid #111;
 
 }
 .SmallScore{
@@ -36,6 +41,7 @@ font-size:30px;
 background-color:rgba(0,0,0,0);
 color:#111;
 
+font-family:'Bad Script';
 border:solid 2px #111;
 
 }
@@ -47,6 +53,7 @@ background-color:#111;
 
 }
 #Retry{
+left:50%;
 }
 #Play{
 
