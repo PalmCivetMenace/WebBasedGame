@@ -10,13 +10,13 @@ position:absolute;
 
 #Scene{
 z-index:1;
-
 }
+
 #Score{
-
+font-family:sans-serif;
 }
-.BigScore{
 
+.BigScore{
 top:5%;
 width:100%;
 text-align: center;
@@ -32,7 +32,9 @@ top:0;
 left:10px;
 position:absolute;
 z-index:2;
+font-size:20px;
 }
+
 .basicBtn
 {
 position:absolute;
@@ -85,7 +87,7 @@ z-index:3;
 }
 #LevelCount{
 z-index:3;
-font-size:30vh;
+font-size:20vh;
 }
 
 .centerUI{
