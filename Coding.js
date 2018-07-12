@@ -8,6 +8,7 @@ window.mobilecheck = function() {
 
 };
 
+
 function $(x){return document.getElementById(x);}
 var mobileCheck=window.mobilecheck();
 const canvas= $("Scene");
@@ -24,16 +25,18 @@ const nextImg=$('NextImg');
 const prevImg=$('PrevImg');
 
 var highScore=localStorage.getItem("HighScore");
+var isGameOver=true;  // So that immediately the game will not start working ...
 if(highScore==null){	// This runs only once .. The first time the game is opened
 localStorage.setItem("HighScore",0);
 }
 var LevelCounter=$("LevelCount");
 var level=1;
-var isGamerOver=false;
+var isGamerOver=true;
 var lastRender=0;
 var shotFrog=false;
 var numberOfPlats=3;
 var Score;
+var fingerPos=[];
 //TutImg.style.left=document.body.clientWidth/2-canvas.width/2;
 /*TutBtn.style.left=document.body.clientWidth/2;
 playBtn.style.left=document.body.clientWidth/2;
@@ -249,6 +252,9 @@ showLevel=true;
 isGameOver=false;
 frog.x=canvas.width/2-frog.width/2;
 frog.y=canvas.height/2;
+frog.savedX=frog.x;
+frog.savedY=frog.y;
+
 frog.folVelx=0;
 frog.folVely=0;
 shotFrog=false; // this is only false at initialization
@@ -330,7 +336,7 @@ this.spawnPoints=[];
 	for(i=0;i<numberOfPlats;i++)
 	{	
 	xPos=(i/numberOfPlats*canvas.width)+(1/numberOfPlats*canvas.width)/2;
-	this.spawnPoints.push([xPos,10,0]); //<<< Tweak This
+	this.spawnPoints.push([xPos,-10,0]); //<<< Tweak This
 	// Syntax : [x:xPos,y:10,waitTime:0]
 		
 	}
@@ -502,48 +508,88 @@ var isDragging=false;
 
 document.onmousedown= function(event){		
 if(!mobileCheck){
-			inputDown(event);
+	inputDown();
 		}
 
 	};
 document.onmouseup =function(event){
 
 if(!mobileCheck){
-inputUp(event);
+inputUp(event.clientX,event.clientY);
 }
 };
 document.onmousemove=function(event){
 
 if(!mobileCheck){
-inputDrag(event);
+inputDrag(event.clientX,event.clientY);
 }
 };
-/*
-document.querySelector('body').addEventListener('touchstart',inputDown);
-document.querySelector('body').addEventListener('touchend',inputUp);
-document.querySelector('body').addEventListener('touchmove',inputDrag);
-document.querySelector('canvas').addEventListener("touchstart",Restart);
-*/
+//-------------------------------------MOBILE INPUT
+document.querySelector('canvas').addEventListener('touchstart',touchDown,false);
+document.querySelector('canvas').addEventListener('touchend',touchUp,false);
+document.querySelector('canvas').addEventListener('touchmove',touchDrag,false);
+//document.querySelector('canvas').addEventListener("touchstart",Restart);
 
-function inputDown(event){
-//event.preventDefault();
+ fingerPos["x"]=0;
+ fingerPos["y"]=0;
+function touchDown(event){
+	
+if(mobileCheck){
+event.preventDefault();
+
+console.log(event.touches);
+	inputDown();
+}
+
+}
+function touchUp(event){
+
+if(mobileCheck){
+event.preventDefault();
+
+console.log(event.touches);
+inputUp(fingerPos.x,fingerPos.y);
+}
+}
+function touchDrag(event){
+
+if(mobileCheck){
+event.preventDefault();
+
+console.log(event.touches);
+inputDrag(event.touches[0].clientX,event.touches[0].clientY);
+
+fingerPos.x=event.touches[0].clientX;
+fingerPos.y=event.touches[0].clientY;
+}
+}
+
+
+//---------------------------------- INPUT ACTION
+function inputDown(){	
+
 if(!isGameOver)
-		{isDragging=true;
-		
+		{
+			console.log(isDragging);
+			isDragging=true;
+	
+		/*
+
 		frog.savedX=frog.x;
 
 		frog.savedY=frog.y;//This is so that the guiding does change when the frog goes down
-		}
+		*/	
+				}
 
 
 }
-function inputUp(event){
-//event.preventDefault();
+function inputUp(x,y){
+
 
 if(isDragging&&!shotFrog)       // >>>>>>> isGrounded is needed so that frog is only launched when on a platform 
 {
-	//console.log(event.clientX,event.clientY);
-frog.calVel(event.clientX,event.clientY);
+	console.log(x,y);
+frog.calVel(x,y);
 isDragging=false;
 shotFrog=true;
 jump.play();
@@ -556,12 +602,12 @@ Guides[i].y=-100;
 }
 }
 
-function inputDrag(event)
+function inputDrag(x,y)
 {
-//event.preventDefault();
+
 
 if(!shotFrog&&isDragging){				
-force= frog.calVel(event.clientX,event.clientY);
+force= frog.calVel(x,y);
 
 for(i=0;i<Guides.length;i++){
 Guides[i].x= (frog.x+frog.width/2)+((i+1)*force[0]*100);
@@ -680,7 +726,7 @@ gameTheme= new sound("Purple Pardon.mp3");
 splash=new sound("splash.mp3");
 stick = new sound("Stick.wav");
 jump = new sound("Jump.wav");
-isGameOver=false;
+isGameOver=true;
 showLevel=true;
 hideLevel=false;
 //------------------------ LOGO LOAD
