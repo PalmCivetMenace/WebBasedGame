@@ -20,6 +20,10 @@ const playBtn= $('Play');
 const TutBtn= $('Tutorial');
 const TutImg=$('TutImg');
 
+
+const sayingArea=$('sayingArea');
+const LoginBtn=$('userMan');
+const LoginArea=$('LoginArea');
 const Logo = $("Logo");
 const nextImg=$('NextImg');
 const prevImg=$('PrevImg');
@@ -190,11 +194,12 @@ GameOver();
 }}
 function GameOver(){
 hideUI(LevelCounter);
-
+unhideUI(sayingArea);
 splash.play();
 
+showKingMsg();
 isGameOver=true; // gameOverScreen is checked in deltaTimeCal
-retry.style.display="block";
+unhideUI(retry);
 FinalScoreDisplay(isNewHighScore());
 }
 function _gameOverScreen(){
@@ -208,6 +213,14 @@ this.img=new Image();
 this.show=function(){
 drawObjINIT(this);
 }
+}
+//---------------LOGIN
+function showLogin(){
+LoginArea.style.display="block";
+}
+//--------------LOGOUT
+function showLogout(){
+LogoutArea.style.display="block";
 }
 
 //--------------- LEVEL TRANSITION
@@ -237,14 +250,14 @@ LevelCounter.innerHTML=level.toString();
 function Restart(){
 
 gameTheme.loop();
-
+hideUI(sayingArea);
 hideUI(nextImg);
 hideUI(prevImg);
 hideUI(retry);
 hideUI(playBtn);
 hideUI(TutBtn);
 hideUI(TutImg);
-
+hideUI(LoginBtn);
 unhideUI(ScoreText);
 unhideUI(LevelCounter);
 ToggleScore(false);
@@ -313,7 +326,10 @@ function TutImgSrc(){
 
 //------------- SHOW MAIN MENU
 function showMainMenu(){
+
+showKingMsg();
 hideUI(ScoreText);
+hideUI(LoginArea);
 hideUI(nextImg);
 hideUI(prevImg);
 clearScene();
@@ -321,6 +337,8 @@ playBtn.style.top=canvas.height/2;
 hideUI(retry);
 unhideUI(playBtn);
 unhideUI(TutBtn);
+unhideUI(sayingArea);
+unhideUI(LoginBtn);
 img= new Image();
 img.onload=function(){
 scene.drawImage(img,0,0,canvas.width,canvas.height);
@@ -457,6 +475,7 @@ ScoreText.innerHTML="Score : "+0;
 
 function isNewHighScore(){
 
+isNewKing();
 if(Score>localStorage.getItem("HighScore")){
 console.log("New High Score");
 localStorage.setItem("HighScore",Score);
@@ -467,18 +486,19 @@ else {
 return false;
 }
 
-}
 
+
+}
 function FinalScoreDisplay(isHighScore){
 
 ToggleScore(true);
 if(isHighScore){
-ScoreText.innerHTML="<b>New</b> High Score <br> "+ Score;
+ScoreText.innerHTML="<b>New</b>Your Personal Best <br> "+ Score;
 }
 else{
-ScoreText.innerHTML="Your Score is "+Score+"<br> High Score  is "+ highScore;
-}
 
+ScoreText.innerHTML="Your Score is "+Score+"<br>Your Personal Best "+ highScore;
+}
 
 }
 
@@ -503,7 +523,53 @@ ScoreText.classList.remove("BigScore");
 ScoreText.classList.add("SmallScore");
 }
 }
-//------------------ DESKTOP INPUT
+//-----------------KING
+function showKingMsg(){
+ajax("php/getKingSaying.php",_showKingMsg);
+
+}
+function _showKingMsg(response){
+details=response.split("||");
+makeMsg(details);
+
+}
+function isNewKing(){
+ajax("./php/getHighestScore.php",_isNewKing);
+}
+function _isNewKing(response)
+{
+
+if(Score>parseInt(response)){
+
+ajax("./php/newHighScore.php?Score="+Score,newKing);
+}
+
+}
+function newKing(response){
+console.log(response);
+if(response)
+{ScoreText.innerHTML="Nice .. Current Highest Score <br>"+Score;
+showKingMsg();
+}
+}
+function ajax (link,func){
+var xmlhttp= new XMLHttpRequest();
+xmlhttp.onreadystatechange=function(){
+if(this.readyState==4&&this.status==200){
+func(this.responseText);
+}
+
+
+}
+xmlhttp.open("GET",link,true);
+xmlhttp.send();
+}
+function makeMsg(King){
+
+output ="<table id='saying'><tr><td class='marqueeLabel'>"+King[0]+" :  "+King[1]+" Says</td><td><div class='marquee'><p>"+King[2]+"</p></div></td> </tr> </table>";
+sayingArea.innerHTML=output;
+}
+//------------------DESKTOP INPUT
 var isDragging=false;
 
 document.onmousedown= function(event){		
@@ -729,6 +795,7 @@ jump = new sound("Jump.wav");
 isGameOver=true;
 showLevel=true;
 hideLevel=false;
+
 //------------------------ LOGO LOAD
 function LogoEnd(){
 //console.log(Logo.style.animationDuration);
