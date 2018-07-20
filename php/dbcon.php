@@ -1,8 +1,13 @@
 <?php
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache"); 
+#The above code is for prevent caching
+
 $server='localhost';
-$user='root';
-$psswd='';
-$db='GallusDB';
+$user='id6388800_chamathinfotech_gallusdb';
+$psswd='GallusDB123';
+$db='id6388800_gallusdb';
 $playerTable="Player";
 
 

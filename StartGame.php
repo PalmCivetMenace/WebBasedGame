@@ -9,6 +9,21 @@
 
 	</head>
 	
+<script>
+
+    window.onload = function() {
+
+    if(!window.location.hash) {
+
+        window.location = window.location + '#loaded';
+
+        window.location.reload();
+
+    }
+
+}
+
+        </script>
 	<link rel="stylesheet" type="text/css" href="./css/Styling.css" >
 	<link rel="stylesheet" type="text/css" href="./css/marquee.css">
 	<body class="unselectable">

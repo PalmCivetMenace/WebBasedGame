@@ -525,23 +525,25 @@ ScoreText.classList.add("SmallScore");
 }
 //-----------------KING
 function showKingMsg(){
-ajax("php/getKingSaying.php",_showKingMsg);
+ajax("php/ks.php?Yep=1",_showKingMsg);
 
 }
 function _showKingMsg(response){
+    console.log(response);
 details=response.split("||");
 makeMsg(details);
-
+console.log(details);
 }
+
 function isNewKing(){
-ajax("./php/getHighestScore.php",_isNewKing);
+ajax("php/Highest.php",_isNewKing);
 }
 function _isNewKing(response)
 {
 
 if(Score>parseInt(response)){
-
-ajax("./php/newHighScore.php?Score="+Score,newKing);
+console.log("Congrats");
+ajax("php/newHigh.php?Score="+Score,newKing);
 }
 
 }
@@ -556,10 +558,9 @@ function ajax (link,func){
 var xmlhttp= new XMLHttpRequest();
 xmlhttp.onreadystatechange=function(){
 if(this.readyState==4&&this.status==200){
+console.log(this);
 func(this.responseText);
 }
-
-
 }
 xmlhttp.open("GET",link,true);
 xmlhttp.send();
@@ -575,6 +576,7 @@ var isDragging=false;
 document.onmousedown= function(event){		
 if(!mobileCheck){
 	inputDown();
+	
 		}
 
 	};
