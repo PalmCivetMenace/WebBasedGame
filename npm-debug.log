@@ -1,0 +1,241 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/bin/node',
+1 verbose cli   '/usr/bin/npm',
+1 verbose cli   'install',
+1 verbose cli   'cordova-android@^7.0.0',
+1 verbose cli   '--production',
+1 verbose cli   '--save' ]
+2 info using npm@3.5.2
+3 info using node@v8.10.0
+4 silly loadCurrentTree Starting
+5 silly install loadCurrentTree
+6 silly install readLocalPackageData
+7 silly fetchPackageMetaData cordova-android@^7.0.0
+8 silly fetchNamedPackageData cordova-android
+9 silly mapToRegistry name cordova-android
+10 silly mapToRegistry using default registry
+11 silly mapToRegistry registry https://registry.npmjs.org/
+12 silly mapToRegistry uri https://registry.npmjs.org/cordova-android
+13 verbose request uri https://registry.npmjs.org/cordova-android
+14 verbose request no auth needed
+15 info attempt registry request try #1 at 7:50:23 PM
+16 verbose request id 175ae9c6b67d5224
+17 verbose etag W/"9ba0cafdc6cdbd0144b27dd30e9c265b"
+18 verbose lastModified Fri, 27 Jul 2018 02:51:39 GMT
+19 http request GET https://registry.npmjs.org/cordova-android
+20 info retry will retry, error on last attempt: Error: getaddrinfo ENOTFOUND registry.npmjs.org registry.npmjs.org:443
+21 info attempt registry request try #2 at 7:50:33 PM
+22 verbose etag W/"9ba0cafdc6cdbd0144b27dd30e9c265b"
+23 verbose lastModified Fri, 27 Jul 2018 02:51:39 GMT
+24 http request GET https://registry.npmjs.org/cordova-android
+25 info retry will retry, error on last attempt: Error: getaddrinfo ENOTFOUND registry.npmjs.org registry.npmjs.org:443
+26 info attempt registry request try #3 at 7:51:33 PM
+27 verbose etag W/"9ba0cafdc6cdbd0144b27dd30e9c265b"
+28 verbose lastModified Fri, 27 Jul 2018 02:51:39 GMT
+29 http request GET https://registry.npmjs.org/cordova-android
+30 silly get cb [ 304, undefined ]
+31 verbose etag https://registry.npmjs.org/cordova-android from cache
+32 verbose get saving cordova-android to /home/palmcivetmenace/.npm/registry.npmjs.org/cordova-android/.cache.json
+33 silly install normalizeTree
+34 silly loadCurrentTree Finishing
+35 silly loadIdealTree Starting
+36 silly install loadIdealTree
+37 silly cloneCurrentTree Starting
+38 silly install cloneCurrentTreeToIdealTree
+39 silly cloneCurrentTree Finishing
+40 silly loadShrinkwrap Starting
+41 silly install loadShrinkwrap
+42 silly loadShrinkwrap Finishing
+43 silly loadAllDepsIntoIdealTree Starting
+44 silly install loadAllDepsIntoIdealTree
+45 silly resolveWithNewModule cordova-android@7.1.1 checking installable status
+46 silly cache add args [ 'cordova-android@^7.0.0', null ]
+47 verbose cache add spec cordova-android@^7.0.0
+48 silly cache add parsed spec Result {
+48 silly cache add   raw: 'cordova-android@^7.0.0',
+48 silly cache add   scope: null,
+48 silly cache add   name: 'cordova-android',
+48 silly cache add   rawSpec: '^7.0.0',
+48 silly cache add   spec: '>=7.0.0 <8.0.0',
+48 silly cache add   type: 'range' }
+49 silly addNamed cordova-android@>=7.0.0 <8.0.0
+50 verbose addNamed ">=7.0.0 <8.0.0" is a valid semver range for cordova-android
+51 silly addNameRange { name: 'cordova-android',
+51 silly addNameRange   range: '>=7.0.0 <8.0.0',
+51 silly addNameRange   hasData: false }
+52 silly mapToRegistry name cordova-android
+53 silly mapToRegistry using default registry
+54 silly mapToRegistry registry https://registry.npmjs.org/
+55 silly mapToRegistry uri https://registry.npmjs.org/cordova-android
+56 verbose addNameRange registry:https://registry.npmjs.org/cordova-android not in flight; fetching
+57 verbose get https://registry.npmjs.org/cordova-android not expired, no request
+58 silly addNameRange number 2 { name: 'cordova-android',
+58 silly addNameRange   range: '>=7.0.0 <8.0.0',
+58 silly addNameRange   hasData: true }
+59 silly addNameRange versions [ 'cordova-android',
+59 silly addNameRange   [ '3.5.0',
+59 silly addNameRange     '3.5.1',
+59 silly addNameRange     '3.6.0',
+59 silly addNameRange     '3.6.1',
+59 silly addNameRange     '3.6.3',
+59 silly addNameRange     '3.6.4',
+59 silly addNameRange     '3.7.0',
+59 silly addNameRange     '3.7.1',
+59 silly addNameRange     '4.0.0',
+59 silly addNameRange     '4.0.1',
+59 silly addNameRange     '3.7.2',
+59 silly addNameRange     '4.0.2',
+59 silly addNameRange     '4.1.0',
+59 silly addNameRange     '4.1.1',
+59 silly addNameRange     '5.0.0',
+59 silly addNameRange     '5.1.0',
+59 silly addNameRange     '5.1.1',
+59 silly addNameRange     '5.2.0-nightly.2016.5.24.9738079c',
+59 silly addNameRange     '5.2.0-nightly.2016.5.25.9738079c',
+59 silly addNameRange     '5.2.0-nightly.2016.5.26.d125ece9',
+59 silly addNameRange     '5.2.0-nightly.2016.5.27.d125ece9',
+59 silly addNameRange     '5.2.0-nightly.2016.5.28.d125ece9',
+59 silly addNameRange     '5.2.0-nightly.2016.5.30.d125ece9',
+59 silly addNameRange     '5.2.0-nightly.2016.5.31.d125ece9',
+59 silly addNameRange     '5.2.0-nightly.2016.6.1.3a1b4ffc',
+59 silly addNameRange     '5.2.0-nightly.2016.6.2.3a1b4ffc',
+59 silly addNameRange     '5.2.0-nightly.2016.6.3.81d62196',
+59 silly addNameRange     '5.2.0-nightly.2016.6.4.81d62196',
+59 silly addNameRange     '5.2.0-nightly.2016.6.5.81d62196',
+59 silly addNameRange     '5.2.0-nightly.2016.6.6.81d62196',
+59 silly addNameRange     '5.2.0-nightly.2016.6.7.81d62196',
+59 silly addNameRange     '5.2.0-nightly.2016.6.8.81d62196',
+59 silly addNameRange     '5.2.0-nightly.2016.6.9.81d62196',
+59 silly addNameRange     '5.2.0-nightly.2016.6.10.04a3c9d9',
+59 silly addNameRange     '5.2.0-nightly.2016.6.12.04a3c9d9',
+59 silly addNameRange     '5.2.0-nightly.2016.6.13.04a3c9d9',
+59 silly addNameRange     '5.2.0-nightly.2016.6.14.04a3c9d9',
+59 silly addNameRange     '5.2.0-nightly.2016.6.16.04a3c9d9',
+59 silly addNameRange     '5.2.0-nightly.2016.6.17.04a3c9d9',
+59 silly addNameRange     '5.2.0-nightly.2016.6.18.04a3c9d9',
+59 silly addNameRange     '5.2.0-nightly.2016.6.20.04a3c9d9',
+59 silly addNameRange     '5.2.0-nightly.2016.6.21.04a3c9d9',
+59 silly addNameRange     '5.2.0-nightly.2016.6.22.04a3c9d9',
+59 silly addNameRange     '5.2.0-nightly.2016.6.23.04a3c9d9',
+59 silly addNameRange     '5.2.0-nightly.2016.6.24.04a3c9d9',
+59 silly addNameRange     '5.2.0-nightly.2016.6.26.04a3c9d9',
+59 silly addNameRange     '5.2.0-nightly.2016.6.27.04a3c9d9',
+59 silly addNameRange     '5.2.0-nightly.2016.6.28.1fcee242',
+59 silly addNameRange     '5.2.0-nightly.2016.6.29.22918152',
+59 silly addNameRange     '5.3.0-nightly.2016.6.30.103e1e8d',
+59 silly addNameRange     '5.3.0-nightly.2016.7.1.103e1e8d',
+59 silly addNameRange     '5.2.0',
+59 silly addNameRange     '5.3.0-nightly.2016.7.2.103e1e8d',
+59 silly addNameRange     '5.3.0-nightly.2016.7.3.103e1e8d',
+59 silly addNameRange     '5.3.0-nightly.2016.7.4.103e1e8d',
+59 silly addNameRange     '5.3.0-nightly.2016.7.5.103e1e8d',
+59 silly addNameRange     '5.3.0-nightly.2016.7.6.103e1e8d',
+59 silly addNameRange     '5.3.0-nightly.2016.7.7.f1c185b7',
+59 silly addNameRange     '5.3.0-nightly.2016.7.8.f1c185b7',
+59 silly addNameRange     '5.3.0-nightly.2016.7.10.f1c185b7',
+59 silly addNameRange     '5.3.0-nightly.2016.7.12.39165a86',
+59 silly addNameRange     '5.2.1',
+59 silly addNameRange     '5.3.0-nightly.2016.7.14.39165a86',
+59 silly addNameRange     '5.3.0-nightly.2016.7.15.39165a86',
+59 silly addNameRange     '5.3.0-nightly.2016.7.16.39165a86',
+59 silly addNameRange     '5.3.0-nightly.2016.7.17.39165a86',
+59 silly addNameRange     '5.3.0-nightly.2016.7.18.39165a86',
+59 silly addNameRange     '5.3.0-nightly.2016.7.20.39165a86',
+59 silly addNameRange     '5.3.0-nightly.2016.7.23.8163713',
+59 silly addNameRange     '5.3.0-nightly.2016.7.24.8163713',
+59 silly addNameRange     '5.3.0-nightly.2016.7.25.8163713',
+59 silly addNameRange     '5.3.0-nightly.2016.7.26.8163713',
+59 silly addNameRange     '5.3.0-nightly.2016.7.27.74ae6651',
+59 silly addNameRange     '5.3.0-nightly.2016.7.28.74ae6651',
+59 silly addNameRange     '5.3.0-nightly.2016.7.29.74ae6651',
+59 silly addNameRange     '5.3.0-nightly.2016.8.2.74ae6651',
+59 silly addNameRange     '5.3.0-nightly.2016.8.4.d54a42f0',
+59 silly addNameRange     '5.3.0-nightly.2016.8.5.d54a42f0',
+59 silly addNameRange     '5.3.0-nightly.2016.8.6.d54a42f0',
+59 silly addNameRange     '5.3.0-nightly.2016.8.7.d54a42f0',
+59 silly addNameRange     '5.3.0-nightly.2016.8.8.d54a42f0',
+59 silly addNameRange     '5.3.0-nightly.2016.8.9.d54a42f0',
+59 silly addNameRange     '5.3.0-nightly.2016.8.10.d54a42f0',
+59 silly addNameRange     '5.3.0-nightly.2016.8.11.d54a42f0',
+59 silly addNameRange     '5.3.0-nightly.2016.8.12.ed543dc6',
+59 silly addNameRange     '5.3.0-nightly.2016.8.13.ed543dc6',
+59 silly addNameRange     '5.3.0-nightly.2016.8.15.ed543dc6',
+59 silly addNameRange     '5.3.0-nightly.2016.8.16.ed543dc6',
+59 silly addNameRange     '5.3.0-nightly.2016.8.17.2efe2406',
+59 silly addNameRange     '5.3.0-nightly.2016.8.18.2efe2406',
+59 silly addNameRange     '5.3.0-nightly.2016.8.20.8fbb6d7c',
+59 silly addNameRange     '5.3.0-nightly.2016.8.21.8fbb6d7c',
+59 silly addNameRange     '5.3.0-nightly.2016.8.22.8fbb6d7c',
+59 silly addNameRange     '5.2.2',
+59 silly addNameRange     '5.3.0-nightly.2016.8.23.4a0a7bc4',
+59 silly addNameRange     '5.3.0-nightly.2016.8.24.4a0a7bc4',
+59 silly addNameRange     '5.3.0-nightly.2016.8.25.4a0a7bc4',
+59 silly addNameRange     '5.3.0-nightly.2016.8.26.4a0a7bc4',
+59 silly addNameRange     '5.3.0-nightly.2016.8.27.4a0a7bc4',
+59 silly addNameRange     '5.3.0-nightly.2016.8.28.4a0a7bc4',
+59 silly addNameRange     ... 390 more items ] ]
+60 silly addNamed cordova-android@7.1.1
+61 verbose addNamed "7.1.1" is a plain semver version for cordova-android
+62 silly mapToRegistry name cordova-android
+63 silly mapToRegistry using default registry
+64 silly mapToRegistry registry https://registry.npmjs.org/
+65 silly mapToRegistry uri https://registry.npmjs.org/cordova-android
+66 verbose addRemoteTarball https://registry.npmjs.org/cordova-android/-/cordova-android-7.1.1.tgz not in flight; adding
+67 verbose addRemoteTarball [ 'https://registry.npmjs.org/cordova-android/-/cordova-android-7.1.1.tgz',
+67 verbose addRemoteTarball   '711559ee18f5f625a2348d4ce348930d14890e2d' ]
+68 info retry fetch attempt 1 at 7:51:34 PM
+69 info attempt registry request try #1 at 7:51:34 PM
+70 http fetch GET https://registry.npmjs.org/cordova-android/-/cordova-android-7.1.1.tgz
+71 info retry will retry, error on last attempt: Error: getaddrinfo ENOTFOUND registry.npmjs.org registry.npmjs.org:443
+72 info attempt registry request try #2 at 7:51:44 PM
+73 http fetch GET https://registry.npmjs.org/cordova-android/-/cordova-android-7.1.1.tgz
+74 info retry will retry, error on last attempt: Error: getaddrinfo ENOTFOUND registry.npmjs.org registry.npmjs.org:443
+75 info attempt registry request try #3 at 7:52:44 PM
+76 http fetch GET https://registry.npmjs.org/cordova-android/-/cordova-android-7.1.1.tgz
+77 error fetch failed https://registry.npmjs.org/cordova-android/-/cordova-android-7.1.1.tgz
+78 warn retry will retry, error on last attempt: Error: getaddrinfo ENOTFOUND registry.npmjs.org registry.npmjs.org:443
+79 info retry fetch attempt 2 at 7:52:54 PM
+80 info attempt registry request try #1 at 7:52:54 PM
+81 http fetch GET https://registry.npmjs.org/cordova-android/-/cordova-android-7.1.1.tgz
+82 info retry will retry, error on last attempt: Error: getaddrinfo ENOTFOUND registry.npmjs.org registry.npmjs.org:443
+83 info attempt registry request try #2 at 7:53:04 PM
+84 http fetch GET https://registry.npmjs.org/cordova-android/-/cordova-android-7.1.1.tgz
+85 info retry will retry, error on last attempt: Error: getaddrinfo ENOTFOUND registry.npmjs.org registry.npmjs.org:443
+86 info attempt registry request try #3 at 7:54:04 PM
+87 http fetch GET https://registry.npmjs.org/cordova-android/-/cordova-android-7.1.1.tgz
+88 error fetch failed https://registry.npmjs.org/cordova-android/-/cordova-android-7.1.1.tgz
+89 warn retry will retry, error on last attempt: Error: getaddrinfo ENOTFOUND registry.npmjs.org registry.npmjs.org:443
+90 info retry fetch attempt 3 at 7:55:04 PM
+91 info attempt registry request try #1 at 7:55:04 PM
+92 http fetch GET https://registry.npmjs.org/cordova-android/-/cordova-android-7.1.1.tgz
+93 info retry will retry, error on last attempt: Error: getaddrinfo ENOTFOUND registry.npmjs.org registry.npmjs.org:443
+94 info attempt registry request try #2 at 7:55:14 PM
+95 http fetch GET https://registry.npmjs.org/cordova-android/-/cordova-android-7.1.1.tgz
+96 info retry will retry, error on last attempt: Error: getaddrinfo ENOTFOUND registry.npmjs.org registry.npmjs.org:443
+97 info attempt registry request try #3 at 7:56:14 PM
+98 http fetch GET https://registry.npmjs.org/cordova-android/-/cordova-android-7.1.1.tgz
+99 error fetch failed https://registry.npmjs.org/cordova-android/-/cordova-android-7.1.1.tgz
+100 silly rollbackFailedOptional Starting
+101 silly rollbackFailedOptional Finishing
+102 silly runTopLevelLifecycles Starting
+103 silly runTopLevelLifecycles Finishing
+104 silly install printInstalled
+105 verbose stack Error: getaddrinfo ENOTFOUND registry.npmjs.org registry.npmjs.org:443
+105 verbose stack     at errnoException (dns.js:50:10)
+105 verbose stack     at GetAddrInfoReqWrap.onlookup [as oncomplete] (dns.js:92:26)
+106 verbose cwd /home/palmcivetmenace/Code/Web/Cordova/Gallus_Mobile
+107 error Linux 4.15.0-29-generic
+108 error argv "/usr/bin/node" "/usr/bin/npm" "install" "cordova-android@^7.0.0" "--production" "--save"
+109 error node v8.10.0
+110 error npm  v3.5.2
+111 error code ENOTFOUND
+112 error errno ENOTFOUND
+113 error syscall getaddrinfo
+114 error network getaddrinfo ENOTFOUND registry.npmjs.org registry.npmjs.org:443
+115 error network This is most likely not a problem with npm itself
+115 error network and is related to network connectivity.
+115 error network In most cases you are behind a proxy or have bad network settings.
+115 error network
+115 error network If you are behind a proxy, please make sure that the
+115 error network 'proxy' config is set properly.  See: 'npm help config'
+116 verbose exit [ 1, true ]
