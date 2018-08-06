@@ -1,5 +1,6 @@
 .marqueeLabel{
-z-index:3
+z-index:3;
+
 }
 .marquee {
  height: 20px;	
@@ -9,11 +10,12 @@ z-index:3
  color: #111;
  border: 2px solid #eee;
 }
-.marquee p {
+.marquee p{
  z-index:3;
+ white-space:pre;
  position: absolute;
- width: 100%;
- height: 100%;
+ height:100%;
+width:100%;
  margin: 0;
  line-height: 20px;
  text-align: left;

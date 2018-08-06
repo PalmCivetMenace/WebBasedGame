@@ -1,0 +1,6 @@
+www/php/dbcon.php
+www/CodingFinal.js
+-f platforms
+-f ReplaceText.txt
+*.swp
+*Off.php

@@ -1,14 +1,14 @@
+<?php header('Access-Control-Allow-Origin: *'); ?>
+
 <?php
 session_start();
 include 'dbcon.php';
-include 'header.php';
-
-include  'footer.php';
 $name = $_POST['player_name'];
 $email= $_POST['player_email'];
 $unhashedpsswd= $_POST['player_psswd'];
 $saying=$_POST['player_saying'];
 $hashedpsswd=password_hash("$unhashedpsswd",PASSWORD_DEFAULT);
+
 
 
 /*
@@ -29,8 +29,8 @@ $insertQuery="INSERT INTO $playerTable VALUES(?,?,?,'',?)";
 //----------------------------------------------------------
 if(!$stmt= $conn->prepare($checkEmail)){
 
-echo "Prepare failed: (" . $conn->errno . ") " . $conn->error;
 
+die("3");
 }
 
 $stmt->bind_param("s",$email);
@@ -40,7 +40,7 @@ $stmt->execute();
 $result=$stmt->get_result();
 if($result->num_rows>0)
 {
-die ("The Email $email is Already in use");
+die ("1"); //email in use
 }
 
 
@@ -49,8 +49,7 @@ die ("The Email $email is Already in use");
 //------------------------------------------------------------
 if(!$stmt= $conn->prepare($checkName)){
 
-echo "Prepare failed: (" . $conn->errno . ") " . $conn->error;
-
+die("3");
 }
 
 
@@ -61,12 +60,12 @@ $result=$stmt->get_result();
 if($result->num_rows)
 {
 	
-die ("The $name Nick Name is  Taken");
+die ("2"); // name in use
 }
 //-----------------------------------------------------------
 if(!$stmt= $conn->prepare($insertQuery) ){
 
-echo "Prepare failed: (" . $conn->errno . ") " . $conn->error;
+die("3");
 
 }
 
@@ -77,20 +76,13 @@ $stmt->bind_param("ssss",$email,$name,$hashedpsswd,$saying);
 $result=$stmt->execute();
 
 if($result){
-echo '<h1> Welcome </h1>';
-$_SESSION['loggedIn']=true;
-$_SESSION['user']=$name;
-
-$_SESSION['email']=$email;
-$_SESSION['saying']=$saying;
+echo("7"); // ADDED PLAYER
 }
 else
 {
-echo'Sorry<br>Failed to add You as a Player';
+echo'4'; //Failed to add
 
 }
-
-echo "<a class='centerUI basicBtn' href='../StartGame.php'>Play</a>"
 
 ?>
 
