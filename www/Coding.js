@@ -1,4 +1,5 @@
-///-------------------INIT 1
+flys///-------------------INIT 1
+// (REMOVE LogoEnd() in the end of the script from the final build)
 window.mobilecheck = function() {
   var check = false;
   (function(a){if(/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino/i.test(a)||/1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(a.substr(0,4))) check = true;})(navigator.userAgent||navigator.vendor||window.opera);
@@ -7,8 +8,81 @@ window.mobilecheck = function() {
  return check;
 
 };
+//----------------------LOAD PLUGINS
+var Cordapp = {
+    // Application Constructor
+    initialize: function() {
+        document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
+    },
+
+    // deviceready Event Handler
+    //
+    // Bind any cordova events here. Common events are:
+    // 'pause', 'resume', etc.
+    onDeviceReady: function() {
+        this.receivedEvent('deviceready');
+    },
+
+    // Update DOM on a Received Event
+    receivedEvent: function(id) {
+	LogoEnd();// Begins to end only after plugins are loaded
+	console.log("YEEP");
+	needPermission();
+    }
+};
+
+Cordapp.initialize();
+
+//----------------------PERMISSIONS
 
 
+var isApp=false;
+var permissions;
+
+function needPermission(){
+var app = document.URL.indexOf( 'http://' ) === -1 && document.URL.indexOf( 'https://' ) === -1;
+if ( app ) {
+   isApp=true;
+	
+permissions = cordova.plugins.permissions;
+permissions.hasPermission(permissions.INTERNET, function( status ){
+  if ( !status.hasPermission ) {
+	if(sessionStorage.getItem("setperm")==null||sessionStorage.getItem("setperm")==false){
+	sessionStorage.setItem("setperm",true);
+	askPermissions();
+		}
+	else{
+		haveInternetPerm=false;
+		}
+	
+  }
+else {
+haveInternetPerm=true;
+
+}
+});	
+}
+
+ else {
+console.log("Not an App");
+isApp=false;
+}  
+}
+function askPermissions()
+{
+
+	permissions.requestPermissions(permissions, GoBack,GoBack);
+}
+//-----------------CHECK PERMISSION
+function checkInternetPerm(){
+if((isApp)&&(!haveInternetPerm))
+{
+return false;
+}
+return true;
+
+}
+//-------------DECLARE
 function $(x){return document.getElementById(x);}
 
 var mobileCheck=window.mobilecheck();
@@ -25,6 +99,7 @@ const retry = $("Retry");
 const backBtn=$("BackBtn");
 
 const ScoreText=$("Score");
+const CoinText=$("Coins");
 const playBtn= $('Play');
 const TutBtn= $('Tutorial');
 const TutImg=$('TutImg');
@@ -52,6 +127,7 @@ var lastRender=0;
 var shotFrog=false;
 var numberOfPlats=3;
 var Score;
+var Coins;
 var fingerPos=[];
 //TutImg.style.left=document.body.clientWidth/2-canvas.width/2;
 /*TutBtn.style.left=document.body.clientWidth/2;
@@ -89,8 +165,29 @@ this.folVely=0;
 this.resis=.01;
 this.img = new Image();
 }
+function _fly(x,y,Vely){
 
+var flyImgs=[
+[20,20,"plat_2.png"],
+[20,20,"plat_2.png"],
+[20,20,"plat_3.png"],
+];
 
+// Explaination = [width:20,height:100,image:"plat_2.png"] 
+
+this.img = new Image();
+
+var randfly= Math.floor(rand(0,flyImgs.length));
+
+this.width=flyImgs[randfly][0];
+this.height=flyImgs[randfly][1];
+this.image=flyImgs[randfly][2];
+this.x=x;
+this.y=y;
+this.Velx=0;
+this.Vely=Vely;
+this.Jitter=0.04;
+}
 function _BackG(){
 
 this.width=canvas.width;
@@ -102,7 +199,7 @@ this.y=0;
 this.img = new Image();
 }
 
-function _Plat(x,y,Vely,Velx){
+function _Plat(x,y,Vely){
 
 this.floating=true;
 
@@ -178,7 +275,9 @@ function move(obj,dt){
 obj.x+= obj.Velx*dt;
 obj.y+= obj.Vely*dt;
 }
-
+function jitter(obj,dt){
+obj.x+=rand(-obj.Jitter,obj.Jitter)*dt;
+}
 function follow(dt)
 {
 frog.x+=frog.folVelx*dt;
@@ -245,7 +344,12 @@ window.location.reload();
 //------------- CHECK LOGIN
 function isLoggedIn(data)
 {			//Call this every time you go to the main menu
+if(!checkInternetPerm)
+{
+showLogBtn("permission");
+return 0;
 
+}
 	if(navigator.onLine)
 	{
 	wasLoggedIn();	
@@ -255,8 +359,9 @@ function isLoggedIn(data)
 	console.log("NOT Connected");
 	showLogBtn("offline");
 	}
-}
 
+
+}
 
 
 function wasLoggedIn(){
@@ -317,7 +422,7 @@ getSaying();
 function showLogBtn(i){
 switch (i){
 case "Logged":
-LoginBtn.innerHTML="<div onclick='showLogout()'>Hello "+player.name+"</div>";
+LoginBtn.innerHTML="<div onclick='showLogout()'>"+player.name+"'s Profile</div>   <div  class='horCenter small basicBtn' id='LogoutBtn' onclick='LogOut()'>Logout</div>";
 
 
 break;
@@ -327,6 +432,10 @@ break;
 case "Login":
 
 	LoginBtn.innerHTML="<div onclick='showLogin()'>Login</div>";
+break;
+case "permission":
+	
+	LoginBtn.innerHTML="<div onclick='askPermissions()'>Grant Internet Permission</div>";
 break;
 }
 }
@@ -511,6 +620,7 @@ hideUI(TutImgDiv);
 hideUI(LoginBtn);
 hideUI(backBtn);
 unhideUI(ScoreText);
+unhideUI(CoinText);
 unhideUI(LevelCounter);
 ToggleScore(false);
 showLevel=true;
@@ -525,6 +635,7 @@ frog.folVely=0;
 shotFrog=false; // this is only false at initialization
 lastRender=0;
 ResetScore();
+ResetCoins();
 ResetLevel();
 Spawns.ResetSpeed();
 op=0;
@@ -588,7 +699,9 @@ function showMainMenu(){
 hideUI(backBtn);
 isLoggedIn();
 showKingMsg();
+
 hideUI(ScoreText);
+hideUI(CoinText);
 hideUI(LoginArea);
 hideUI(RegisArea);
 clearScene();
@@ -624,9 +737,54 @@ this.maxWait=2;
 this.minVely; // increase with player Progress
 this.maxVely;
 
-this.timeSpawn=function(dt){
-	this.secondCounter+=dt
-	if(this.secondCounter>1000)
+this.timeSpawn=TimeSpawn;
+this.Faster=function(){
+
+	this.minVely+=this.minVely*.2;	
+
+	this.maxVely+=this.maxVely*.2;	
+	}
+	this.ResetSpeed=function()
+	{
+	this.minVely=0.05; // increase with player Progress
+	this.maxVely=0.09;
+	}
+
+	this.newObj=function(x,y,Vely){
+	Plats.push(new _Plat(x,y,Vely));
+}
+
+	this.ResetSpeed();
+}
+function _flySpawn(){
+numOfFlySpawn=numberOfPlats-1;
+this.spawnPoints=[];
+	for(i=0;i<numOfFlySpawn;i++)
+	{	
+	xPos=(i/numOfFlySpawn*canvas.width)+(1/numOfFlySpawn*canvas.width)/2;
+	this.spawnPoints.push([xPos,-10,0]); //<<< Tweak This
+	// Syntax : [x:xPos,y:10,waitTime:0]
+		
+	}
+this.secondCounter=0;
+this.minWait=5;
+this.maxWait=4;
+this.x;
+this.y;
+this.minVely=0.1;
+this.maxVely=0.1; //<<TWEAK THIS
+this.timeSpawn=TimeSpawn;
+this.newObj=function(x,y,Vely){
+	flys.push(new _fly(x,y,Vely));
+}
+
+
+}
+//Spawning Timer
+function TimeSpawn(dt,waitTime){
+
+this.secondCounter+=dt
+	if(this.secondCounter>waitTime)
 	{
 
  		this.secondCounter=0;
@@ -641,7 +799,7 @@ this.timeSpawn=function(dt){
 			
 		if(this.turnCounter==this.turn){				
 		spawn[2]= rand(this.minWait,this.maxWait);
-		this.newPlat(spawn[0],spawn[1],rand(this.minVely,this.maxVely));
+		this.newObj(spawn[0],spawn[1],rand(this.minVely,this.maxVely));
 		//console.log(Plats);
 		}
 		this.turnCounter++;
@@ -651,31 +809,15 @@ this.timeSpawn=function(dt){
 		);
 	}
 }
-	this.Faster=function(){
-
-	this.minVely+=this.minVely*.2;	
-
-	this.maxVely+=this.maxVely*.2;	
-	}
-	this.ResetSpeed=function()
-	{
-	this.minVely=0.05; // increase with player Progress
-	this.maxVely=0.09;
-	}
-
-	this.newPlat=function(x,y,Vely){
-	Plats.push(new _Plat(x,y,Vely));
-
-	}	
-this.ResetSpeed();
-}
-
+		
 //--------------MEMORY MANAGEMENT
-function freeMemory(i){ // deletes platform when it is no longer in view
-if(Plats[i].y>canvas.height)
+function freeMemory(Obj,i){ // deletes platform when it is no longer in view
+if(Obj[i].y>canvas.height)
 {
-Plats.splice(i,1);
+Obj.splice(i,1);
+return true;
 }
+return false;
 }
 
 //--------------RANDOM
@@ -708,17 +850,28 @@ function clearScene(){ // Simply Redraws the background
 }
 //-------------COLLISION DETECTION
 
-function isColliding(a,b){   // b=frog, a=plat(leaf)
+function isColliding(a,b){   // b=frog, a=plat/fly
 
-if((a.x+a.width/2)>b.x && (a.x+a.width/2)<(b.x+b.width)&&(a.y+a.height/2)>b.y && a.y<(b.y+b.height)&&a.floating==true ){
-AddScore();
-stick.play();
+if((a.x+a.width/2)>b.x && (a.x+a.width/2)<(b.x+b.width)&&(a.y+a.height/2)>b.y && a.y<(b.y+b.height)){
+
+console.log("YEEEEP");
 return true;
 }
 else {return false;}
 
 
 }
+//------------------COIN MANAGEMENT
+function AddCoins(){
+Coins++;
+CoinText.innerHTML="Flys : "+ Coins;
+}
+function ResetCoins(){
+Coins=0;
+ScoreText.innerHTML="Score : "+0;
+
+}
+
 //------------------ SCORE MANAGEMENT
 function AddScore(){
 var increment=1;
@@ -784,8 +937,10 @@ ScoreText.classList.add("SmallScore");
 }
 //-----------------KING
 function showKingMsg(){
+if(checkInternetPerm())
+{
 ajaxGET("./php/ks.php",_showKingMsg);
-
+}
 }
 function _showKingMsg(response){
 details=response.split("||");
@@ -1004,8 +1159,27 @@ for(i=Plats.length-1;i>=0;i--){
 	plat=Plats[i];
 	move(plat,dt);
 	drawObj(plat);
-	freeMemory(i);
+	freeMemory(Plats,i);
 }
+for(i=flys.length-1;i>=0;i--){
+	fly=flys[i];
+	move(fly,dt);
+	jitter(fly,dt);
+	drawObj(fly);
+	if(!freeMemory(flys,i)) {// So we dont check Collision with one that has already been removed
+	
+	if(isColliding(fly,frog))
+		{
+		
+		console.log("Coins hit");
+		AddCoins();	
+		flys.splice(i,1);
+	
+		}	
+	}	
+}
+
+
 	if(shotFrog)
 	{	// When clicked and released the shotFrog is made true
 	move(frog,dt);
@@ -1016,7 +1190,9 @@ for(i=Plats.length-1;i>=0;i--){
 	isOutOfBounds();
 	Plats.forEach(function(plat)
 	{
-	if(isColliding(plat,frog)){
+	if(isColliding(plat,frog)&&plat.floating==true) {
+	AddScore();
+	stick.play();
 	shotFrog=false;
 	plat.FlipOver();
 	
@@ -1037,12 +1213,14 @@ for(i=Plats.length-1;i>=0;i--){
 
 
 drawObj(frog);
-Spawns.timeSpawn(dt);
+Spawns.timeSpawn(dt,1000);// Wait a second before spawing other leaf
+flySpawn.timeSpawn(dt,1000);
 for(i=0;i<Guides.length;i++){
 drawObj(Guides[i]);
 
 }
 }
+
 //-----------------------------UI
 function hideUI(element){
 element.style.display="none";
@@ -1057,6 +1235,8 @@ element.style.display="block";
 var frog= new _frog(64,48);
 var BackG= new _BackG();
 var Plats=[];
+var flys=[];
+var flySpawn= new _flySpawn();
 var Spawns= new _Spawns();
 var Guides=[]; //<<Tweak this
 initGuides(10);
@@ -1080,4 +1260,4 @@ setTimeout(function () {
     },4000);
 }
 //console.log(Logo.style.animation-duration);
-LogoEnd();
+LogoEnd(); // REMOVE FROM FINAL BUILD !!!!!!!!!!!!!!!!!!!!!!!

@@ -6,9 +6,9 @@
 			Gallus
 		</title>
 
+<script type="text/javascript" charset="utf-8" src="cordova.js"></script> 
 
 	</head>
-<!--	
 <script>
 
     window.onload = function() {
@@ -24,7 +24,6 @@
 }
 
         </script>
---!>
 	<link rel="stylesheet" type="text/css" href="./css/Styling.css" >
 	<link rel="stylesheet" type="text/css" href="./css/marquee.css">
 	<body class="unselectable" >
@@ -41,7 +40,9 @@
 
 	</div>
 						<canvas id="Scene"  width="350" height="500"></canvas>
-							<div id="Score" style="display:none" class="unselectable2">Score: 0</div>
+							<div id="Score" style="display:none" class="unselectable2">Score : 0</div>
+								<div id="Coins" style="display:none" class="unselectable2">Flys : 0</div>
+							
 						<button class="centerUI basicBtn" style="display:none" id="Play" onclick="Restart();">Play</button>
 						<button style="display:none" class="centerUI basicBtn" id="Tutorial" onclick="runTutorial();">How to Play</button>
 						<button style="display:none" id="Retry"  class="centerUI basicBtn" onclick="showMainMenu()">Retry</button>
@@ -196,7 +197,7 @@
 
 
 				
-<script src="CodingOff.js"></script>
+<script src="Coding.js"></script>
 
 <!--
 	<button style="display:none" id="Retry"  class="centerUI basicBtn" onclick=";">Retry</button>
