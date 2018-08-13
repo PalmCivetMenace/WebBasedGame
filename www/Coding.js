@@ -1,4 +1,4 @@
-flys///-------------------INIT 1
+///-------------------INIT 1
 // (REMOVE LogoEnd() in the end of the script from the final build)
 window.mobilecheck = function() {
   var check = false;
@@ -99,7 +99,9 @@ const retry = $("Retry");
 const backBtn=$("BackBtn");
 
 const ScoreText=$("Score");
+const FinalText=$("FinalText");
 const CoinText=$("Coins");
+const Values=$("Values");
 const playBtn= $('Play');
 const TutBtn= $('Tutorial');
 const TutImg=$('TutImg');
@@ -311,6 +313,7 @@ splash.play();
 showKingMsg();
 isGameOver=true; // gameOverScreen is checked in deltaTimeCal
 unhideUI(retry);
+addToWallet();
 FinalScoreDisplay(isNewHighScore());
 }
 function _gameOverScreen(){
@@ -700,8 +703,8 @@ hideUI(backBtn);
 isLoggedIn();
 showKingMsg();
 
-hideUI(ScoreText);
-hideUI(CoinText);
+hideUI(Values);
+hideUI(FinalText);
 hideUI(LoginArea);
 hideUI(RegisArea);
 clearScene();
@@ -757,7 +760,7 @@ this.Faster=function(){
 	this.ResetSpeed();
 }
 function _flySpawn(){
-numOfFlySpawn=numberOfPlats-1;
+numOfFlySpawn=numberOfPlats+1;
 this.spawnPoints=[];
 	for(i=0;i<numOfFlySpawn;i++)
 	{	
@@ -766,9 +769,9 @@ this.spawnPoints=[];
 	// Syntax : [x:xPos,y:10,waitTime:0]
 		
 	}
-this.secondCounter=0;
-this.minWait=5;
-this.maxWait=4;
+this.secondCounter=1;
+this.minWait=8;
+this.maxWait=10;
 this.x;
 this.y;
 this.minVely=0.1;
@@ -800,7 +803,7 @@ this.secondCounter+=dt
 		if(this.turnCounter==this.turn){				
 		spawn[2]= rand(this.minWait,this.maxWait);
 		this.newObj(spawn[0],spawn[1],rand(this.minVely,this.maxVely));
-		//console.log(Plats);
+		console.log(spawn[2]);
 		}
 		this.turnCounter++;
 		}
@@ -868,8 +871,21 @@ CoinText.innerHTML="Flys : "+ Coins;
 }
 function ResetCoins(){
 Coins=0;
-ScoreText.innerHTML="Score : "+0;
+CoinText.innerHTML="Flys : "+0;
 
+}
+function addToWallet(){
+if(Coins>0)
+{
+currentCoins=localStorage.getItem("Coins");
+if(currentCoins==null)
+
+currentCoins=0;
+currentCoins=parseInt(currentCoins);
+currentCoins+=Coins;
+
+localStorage.setItem("Coins",currentCoins);
+}
 }
 
 //------------------ SCORE MANAGEMENT
@@ -905,34 +921,26 @@ function FinalScoreDisplay(isHighScore){
 
 ToggleScore(true);
 if(isHighScore){
-ScoreText.innerHTML="<b>New</b>Your Personal Best <br> "+ Score;
+FinalText.innerHTML="<b>New</b>Your Personal Best <br> "+ Score;
 }
 else{
 
-ScoreText.innerHTML="Your Score is "+Score+"<br>Your Personal Best "+ highScore;
+FinalText.innerHTML="Your Score is "+Score+"<br>Your Personal Best "+ highScore;
 }
-
+FinalText.innerHTML+="<br>You now have "+localStorage.getItem("Coins")+" Flies";
 }
 
 function ToggleScore(isBig)
 {
 if(isBig)
 {
-
-
-
-ScoreText.classList.add("BigScore");
-
-//ScoreText.classList.add("centerUI");
-ScoreText.classList.remove("SmallScore");
+hideUI(Values);
+unhideUI(FinalText);
 }
 else 
 {
-
-//ScoreText.classList.remove("centerUI");
-
-ScoreText.classList.remove("BigScore");
-ScoreText.classList.add("SmallScore");
+unhideUI(Values);
+hideUI(FinalText);
 }
 }
 //-----------------KING
@@ -1214,7 +1222,7 @@ for(i=flys.length-1;i>=0;i--){
 
 drawObj(frog);
 Spawns.timeSpawn(dt,1000);// Wait a second before spawing other leaf
-flySpawn.timeSpawn(dt,1000);
+flySpawn.timeSpawn(dt,10000);
 for(i=0;i<Guides.length;i++){
 drawObj(Guides[i]);
 

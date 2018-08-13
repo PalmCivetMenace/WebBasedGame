@@ -40,13 +40,15 @@
 
 	</div>
 						<canvas id="Scene"  width="350" height="500"></canvas>
-							<div id="Score" style="display:none" class="unselectable2">Score : 0</div>
-								<div id="Coins" style="display:none" class="unselectable2">Flys : 0</div>
+		<div id="Values" class="SmallScore"  style="display:none" >
+							<div id="Score"class="unselectable2">Score : 0</div>
+								<div id="Coins" class="unselectable2">Flys : 0</div>
+		</div>
 							
 						<button class="centerUI basicBtn" style="display:none" id="Play" onclick="Restart();">Play</button>
 						<button style="display:none" class="centerUI basicBtn" id="Tutorial" onclick="runTutorial();">How to Play</button>
 						<button style="display:none" id="Retry"  class="centerUI basicBtn" onclick="showMainMenu()">Retry</button>
-						
+						<div class="BigScore" style="display:none" id="FinalText"> </div>	
 						<p style="display:none" class="centerUI unselectable2" id="LevelCount" >1</p>
 						<img id="Logo" class="centerUI unselectable2" draggable="false" src="Logo_2.png">
 						<div class="horCenter" id="userMan"></div>
