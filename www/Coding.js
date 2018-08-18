@@ -116,7 +116,8 @@ const ForgotArea=$('ForgotArea');
 const Logo = $("Logo");
 const nextImg=$('NextImg');
 const prevImg=$('PrevImg');
-
+const SkinImg=$('SkinImg');
+const skinstate=$('skinstate');
 var highScore=localStorage.getItem("HighScore");
 var isGameOver=true;  // So that immediately the game will not start working ...
 if(highScore==null){	// This runs only once .. The first time the game is opened
@@ -232,8 +233,149 @@ this.image="flip.png";
 
 }
 
+}
+
+//-----------SKIN MANAGER
+
+/*
+function moreSkin(){
+ajaxGET("./php/moreSkins.php",_moreSkin);
 
 }
+function _moreSkin(response)
+{
+downloadSkins(response);
+}
+function downloadSkins(avail)
+{
+var current=1;
+if(localStorage.getItem("Skin_Num")!=null){
+current=localStorage.getItem("Skin_Num");
+}
+else{
+localStorage.setItem("Skin_Num",1);
+}
+if(avail>current){
+	for(i=current;i<avail;i++)
+	{
+		ajaxGET("./php/getSkin.php?num="+i,_getSkin);
+	}
+}
+}
+
+function _getSkin(response){
+console.log(response);
+var svgBlob = new Blob([response], {type:"image/svg+xml;charset=utf-8"});
+var svgUrl = URL.createObjectURL(svgBlob);
+var downloadLink = document.createElement("a");
+downloadLink.href = svgUrl;
+downloadLink.download = "Tree.svg";
+document.body.appendChild(downloadLink);
+downloadLink.click();
+document.body.removeChild(downloadLink);
+}
+*/
+function SkinManager()
+{
+	this.selected;
+	if(navigator.onLine)
+	{this.selected=player.skin-1; // Database starts from 1
+	}
+	this.list=["frog.svg","bubble.png","plat_1.png","plat_2.png"];
+	this.bought;
+	this.checkIfBought=function(num)
+	{
+		for(i=0;i<this.bought.length;i++)
+		{
+	if(num==this.bought[i]-1)
+			{
+			return	true;
+			}
+
+		}	
+		return false;
+	}
+	this.currentCost;
+	this.set=function(x){		
+	
+		this.bought=player.bought.split(","); // Get correct value from the database
+		if((x<0&&this.current>0) ||(x>0 && this.current<this.list.length-1)||x==0)
+		{
+		this.current+=x;
+		this.currentCost=this.current*50;
+		SkinImg.src=this.list[this.current];
+		}
+		
+		if(this.current==this.selected)
+		{
+			skinstate.innerHTML="Selected"
+			skinstate.style.color="gray";
+			skinstate.classList.remove("clickable");
+			return 0 ;
+			
+		}
+	
+		console.log(this.current);
+		if((this.checkIfBought(this.current))||this.current==0){
+		skinstate.innerHTML="Select";
+		skinstate.style.color="green";	
+	
+			skinstate.classList.remove("clickable");
+		skinstate.classList.add("clickable");
+	}
+	else{
+		skinstate.innerHTML=this.currentCost+" flies";
+		skinstate.style.color="yellow";	
+	
+		skinstate.classList.add("clickable");
+	}
+
+
+}
+this.ChangeSelected=function(){
+	
+	if(skinstate.innerHTML=="Selected")
+	{
+		return 0;
+	}
+	if(skinstate.innerHTML=="Select")
+	{
+		this.selected=this.current;
+		sessionStorage.setItem("skin",this.selected);
+	ajaxGET("./php/ChangeSelec.php?Sel="+(this.selected+1)+"&email="+player.email,this._ChangeSelected);
+	}	
+	else
+	{
+		if(this.currentCost>localStorage.getItem("Coins")){
+	alert("You need more Flies");
+	return 0;
+		}
+		else{
+ajaxGET("./php/BuySkin.php?Sel="+(this.current+1)+"&email="+player.email,this._BuySelected);
+
+	localStorage.setItem("Coins",localStorage.getItem("Coins")-this.currentCost);
+	this.selected=this.current;
+		sessionStorage.setItem("skin",this.selected);
+
+	}
+}
+
+}
+
+this._ChangeSelected=function(response){
+GoBack();
+}
+this._BuySelected=function(response)
+	{
+GoBack();
+	}
+	
+
+
+this.current=this.selected;
+
+}
+
 //----------- GUIDE
 function _Guide(x,y){
 this.x=x;
@@ -331,11 +473,14 @@ drawObjINIT(this);
 //-------------PLAYER
 function _player(){
 this.name=sessionStorage.getItem("name");
-
+//this.skin= sessionStorage.getItem("skin");
+this.skin=1;
 this.saying=sessionStorage.getItem("saying");
 
 this.email=localStorage.getItem("email");
 this.psswd=localStorage.getItem("psswd");
+this.bought=localStorage.getItem("bought");
+
 }
 player= new _player();
 
@@ -414,7 +559,11 @@ player.psswd=unset_psswd;
 localStorage.setItem("email",unset_email);
 localStorage.setItem("psswd",unset_psswd);
 player.name=resArray[1];
+player.skin=resArray[2];
+player.bought=resArray[3];
+sessionStorage.setItem("skin",resArray[2]);
 sessionStorage.setItem("name",resArray[1]);
+sessionStorage.setItem("bought",player.bought);
 hideUI(LoginArea);
 hideUI(backBtn);
 showLogBtn("Logged");
@@ -446,7 +595,9 @@ break;
 function showLogout(){
 unhideUI(backBtn);
 unhideUI(LogoutArea);
-
+SkinMan.selected=player.skin-1;
+SkinMan.current=SkinMan.selected;
+SkinMan.set(0); 
 getSaying();
 }
 function LogOut(){
@@ -549,13 +700,14 @@ GoBack();
 break;
 case "7":case "\n7":
 
-GoBack();
 player.email=unset_email;
 getSaying();
 player.psswd=unset_psswd;
 localStorage.setItem("email",unset_email);
 localStorage.setItem("psswd",unset_psswd);
 LoginBtn("Logged");
+
+GoBack();
 break;
 }
 
@@ -1178,7 +1330,7 @@ for(i=flys.length-1;i>=0;i--){
 	
 	if(isColliding(fly,frog))
 		{
-		
+		catchfly.play();	
 		console.log("Coins hit");
 		AddCoins();	
 		flys.splice(i,1);
@@ -1251,9 +1403,11 @@ initGuides(10);
 var maxLevelScore=5;
 var gameOverScreen= new _gameOverScreen();
 var TutImgManager= new TutImgSrc(); 
+var SkinMan= new SkinManager();
 gameTheme= new sound("Purple Pardon.mp3");
 splash=new sound("splash.mp3");
 stick = new sound("Stick.wav");
+catchfly = new sound("Stick.wav");
 jump = new sound("Jump.wav");
 isGameOver=true;
 showLevel=true;

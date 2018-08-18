@@ -187,9 +187,21 @@
 						</tr>
 												<tr>
 						<td colspan="2">
-						<div class="horCenter small basicBtn" onclick="ChangeSay()">Change</div> 
+						<div class="small basicBtn" onclick="ChangeSay()">Change</div> 
 						</td>
 	`				
+						</tr>
+						<tr>
+						<td colspan="2">	
+						<div class="flexHor">
+						<div class="small basicBtn" onclick="SkinMan.set(-1)">Prev</div>
+						<div class="flexVer">
+						<img id="SkinImg" src="frog.svg">		<div id="skinstate" onclick="SkinMan.ChangeSelected()">
+	</div>
+						</div>
+						<div class="small basicBtn" onclick="SkinMan.set(+1)">Next</div>
+						</div>
+						</td>
 						</tr>
 						</table>
 
@@ -199,7 +211,7 @@
 
 
 				
-<script src="Coding.js"></script>
+<script src="CodingOff.js"></script>
 
 <!--
 	<button style="display:none" id="Retry"  class="centerUI basicBtn" onclick=";">Retry</button>
