@@ -6,9 +6,9 @@
 			Gallus
 		</title>
 
+<script type="text/javascript" charset="utf-8" src="cordova.js"></script> 
 
 	</head>
-	
 <script>
 
     window.onload = function() {
@@ -26,34 +26,31 @@
         </script>
 	<link rel="stylesheet" type="text/css" href="./css/Styling.css" >
 	<link rel="stylesheet" type="text/css" href="./css/marquee.css">
-	<body class="unselectable">
-		<center>
-		<table>
-			<tr>
-				<th>
-					<img id="BI" class="unselectable2" draggable="false" src="BackImgMain1.png"></img>
-				</th>
-
-				<td style="width:350px">
-
+	<body class="unselectable" >
 					<!--	<embed src="Brixton Purpose.mp3" autostart="true" loop="true"/> -->
 					<div id="container" class="centerUI">
-						<img id="TutImg"  class="centerUI" style="display:none;" alt="Tutorial GIF" width="350" height="500">
+<div id="sayingArea" class="bottom" style="font-family:cursive;top:90%;position:absolute;z-index:4;display:none">
+ 		</div>
+	<div id="TutImgDiv" style="display:none;"  class="panel centerUI">	
+						<img id="TutImg"  class="centerUI" alt="Tutorial GIF" width="350" height="500">
+						<div class="bottom flexHor">
+						<button class="basicBtn small"id="PrevImg" onclick="TutImgManager.ChangeImg(-1)">Previous</button>
+						<button class="basicBtn small"id="NextImg" onclick="TutImgManager.ChangeImg(+1)">Next</button>
+	</div>
 
-
+	</div>
 						<canvas id="Scene"  width="350" height="500"></canvas>
 							<div id="Score" style="display:none" class="unselectable2">Score: 0</div>
 						<button class="centerUI basicBtn" style="display:none" id="Play" onclick="Restart();">Play</button>
 						<button style="display:none" class="centerUI basicBtn" id="Tutorial" onclick="runTutorial();">How to Play</button>
-						<button class="basicBtn bottom" style="display:none" id="PrevImg" onclick="TutImgManager.ChangeImg(-1)">Previous</button>
-						<button class="basicBtn bottom" style="display:none"  id="NextImg" onclick="TutImgManager.ChangeImg(+1)">Next</button>
 						<button style="display:none" id="Retry"  class="centerUI basicBtn" onclick="showMainMenu()">Retry</button>
 						
 						<p style="display:none" class="centerUI unselectable2" id="LevelCount" >1</p>
-						<img id="Logo" class="centerUI unselectable2" draggable="false" src="Logo.png">
+						<img id="Logo" class="centerUI unselectable2" draggable="false" src="Logo_2.png">
+						<div class="horCenter" id="userMan"></div>
 					
 						<div id="LoginArea" class="panel centerUI"style="display:none" >
-						<form method="POST" action="./php/LoginPlayer.php">
+						<form name="LoginForm" method="POST" action="http://localhost/Gallus/www/php/LoginPlayer.php">
 						<table class="centerUI">
 						<tr>
 						<td>
@@ -77,24 +74,108 @@
 						</tr>
 						<tr>
 						<td colspan="2">
-						<input type="submit" class="basicBtn" value="Done">
+						<div class="basicBtn" onclick="Login()" >Done</div>
 						</td>
 	`				
 						</tr>
 						</table>
-						</form>				
-						<a class="bottom basicBtn small horCenter" id="RegisterBtn"href="./php/RegisterForm.php">Or Register</a>	
+						</form>				<div class="bottom flexHor">	
+
+						<button class="basicBtn small" id="ForgotBtn" onclick="showForgot()">Forgot Password</button>		
+
+						<button class="basicBtn small" id="RegisterBtn" onclick="showRegis()">Or Register</button>	
+</div>
+
 						</div>
+						<div style="display:none;"id="BackBtn" onclick="GoBack();">
+						</div >
  					
 	
+						<div id="RegisterArea" class="panel centerUI" style="display:none">
 							
+<form name="Register">
+	<table class="centerUI" >
+ 
+	<tr>	
+		<td>
+		Email
+		</td>
+		<td>
+		 *<input type="text" name="player_email" placeholder="Enter your Email here" required>		
+		</td>
+	</tr>	 
+	<tr>
+		<td>
+		Nick Name
+		</td>
+		<td>
+		 *<input type="text" name="player_name" placeholder="Enter your nick name here" required>
+		</td>
+	</tr>	
+	<tr>	
+		<td>
+		Password
+		</td>
+		<td>
+		 *<input type="password" name="player_psswd" placeholder="Enter your Password here" required minlength="5">		
+		</td>
+	</tr>	 
+	<tr>	
+		<td>
+		Confirm Password
+		</td>
+		<td>
+		 *<input type="password" name="player_psswd_2" placeholder="Enter your Password Again" required minlength="5">		
+		</td>
+	</tr>	 
+	<tr>	
+		<td>
+		Saying
+		</td>
+		<td>
+		 <textarea type="password" name="player_saying" cols="20" rows="5" maxlength="256" placeholder="If you get HighScore Everyone will see this what you type here !"></textarea>		
+		</td>
+	</tr>	 
+
+
+	<tr>
+		<td colspan="2">
+			<div class="basicBtn" onclick="ValRegis()">Done</div>
+		</td>
+	</tr>
+	</table>
+	</form>
+		
+						</div>							
+						<div id="ForgotArea" class="panel centerUI" style="display:none">
+							
+	<form name="Forgot">
+	<table class="centerUI" >
+ 
+	<tr>	
+		<td>
+		Email
+		</td>
+		<td>
+		 <input type="text" name="player_email" placeholder="Enter your Email here" required>		
+		</td>
+	</tr>	 
+	<tr>
+		<td colspan="2">
+	<div class="basicBtn small" onclick="sendEmail()">Send Password Reset Email</div>
+		</td>
+	</tr>
+	</table>
+	</form>
+		
+						</div>	
 						<div id="LogoutArea" class="panel centerUI"style="display:none" >
-						<form method="POST" action="./php/ChangeSay.php">
+						<form method="POST" name="ChangeSayForm">
 						<table class="centerUI">
 						<tr>
 						<td>							Your Saying	
 						</td>
-	`					<td>
+						<td>
 <textarea name="saying" placeholder="No PHP" ></textarea>
 						
 						</td>
@@ -102,21 +183,19 @@
 						</tr>
 												<tr>
 						<td colspan="2">
-						<input type="submit" class="horCenter small basicBtn" value="Change">
+						<div class="horCenter small basicBtn" onclick="ChangeSay()">Change</div> 
 						</td>
 	`				
 						</tr>
 						</table>
 
 						</form>				
-						<a class="horCenter bottom small basicBtn" id="LogoutBtn" href="./php/Logout.php">Logout</a>
+						<div class="horCenter bottom small basicBtn" id="LogoutBtn" onclick="LogOut()">Logout</div>
 						</div>
 
-<div id="sayingArea" style="display:none">
- 		</div>
-					
-<script src="Coding2.js"></script>
-				</td>
+
+				
+<script src="Coding.js"></script>
 
 <!--
 	<button style="display:none" id="Retry"  class="centerUI basicBtn" onclick=";">Retry</button>
@@ -132,19 +211,9 @@
 	
 	<br>	
 	Music From www.jukedeck.com
+	 </div> -->
 	 </div> 
-	</div> -->
 	
-
-
-
-
-				<th>
-					<img id="BI" class="unselectable2" draggable="false" src="BackImgMain2.png"></img>
-				</th>
-			</tr>
-		</table>
-		</center>
 	</body>
 
 </html>

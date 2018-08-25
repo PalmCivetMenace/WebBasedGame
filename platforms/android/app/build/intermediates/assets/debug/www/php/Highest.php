@@ -1,3 +1,5 @@
+<?php header('Access-Control-Allow-Origin: *'); ?>
+
 <?php include 'dbcon.php';
 $selectQuery="SELECT Score FROM LeaderBoard ORDER BY Score DESC LIMIT 1";
 

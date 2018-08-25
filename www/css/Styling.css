@@ -33,6 +33,10 @@ background-size:cover;
 z-index:6;
 border:2px solid black;
 }
+#SkinImg{
+width:50;
+height:50;
+}
 .panel
 {
 
@@ -42,14 +46,27 @@ height:100%;
 
 background-color:#eee;
 }
+
 .flexHor{
 width:100%;
 display:flex;
 flex-direction:row;
 justify-content:space-evenly;
-
-
 }
+
+.flexVar{
+height:100%;
+display:flex;
+flex-direction:column;
+justify-content:space-evenly;
+}
+.clickable{
+border :1px solid #111;
+}
+.clickable:hover{
+border :2px solid black;
+}
+
 .BigScore{
 top:5%;
 width:100%;
@@ -70,7 +87,7 @@ font-size:20px;
 color:grey;
 position:absolute;
 z-index:2;
-/
+
 
 }
 

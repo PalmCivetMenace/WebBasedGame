@@ -7,23 +7,80 @@ window.mobilecheck = function() {
  return check;
 
 };
+//----------------------PERMISSIONS
+var isApp=false;
+var permissions;
+var app = document.URL.indexOf( 'http://' ) === -1 && document.URL.indexOf( 'https://' ) === -1;
+if ( app ) {
+   isApp=true;
+	
+permissions = cordova.plugins.permissions;
+} else {
+isApp=false;
+}  
+//-------------------INTERNET PERMISSION
+var haveInternetPerm;
+if(isApp){
+permissions.hasPermission(permissions.INTERNET, function( status ){
+  if ( !status.hasPermission ) {
+	if(sessionStorage.getItem("setperm")==null||sessionStorage.getItem("setperm")==false){
+	sessionStorage.setItem("setperm",true);
+	askPermissions();
+		}
+	else{
+		haveInternetPerm=false;
+		}
+	
+  }
+else {
+haveInternetPerm=true;
 
+}
+});	
 
+}
+function askPermissions()
+{
+
+	permissions.requestPermissions(permissions, GoBack,GoBack);
+}
+//-----------------CHECK PERMISSION
+function checkInternetPerm(){
+if((isApp)&&(!haveInternetPerm))
+{
+return false;
+}
+return true;
+
+}
+//-------------DECLARE
 function $(x){return document.getElementById(x);}
+
 var mobileCheck=window.mobilecheck();
+const container=$("container");
+const height= window.innerHeight;
+const ratio=4/7;
+ container.style.height = height; 
+ container.style.width  =height*ratio;
 const canvas= $("Scene");
+ canvas.height = height; 
+ canvas.width  = height*ratio;
 const scene= canvas.getContext('2d');
 const retry = $("Retry");
+const backBtn=$("BackBtn");
 
 const ScoreText=$("Score");
 const playBtn= $('Play');
 const TutBtn= $('Tutorial');
 const TutImg=$('TutImg');
 
+const TutImgDiv=$('TutImgDiv');
 
 const sayingArea=$('sayingArea');
 const LoginBtn=$('userMan');
 const LoginArea=$('LoginArea');
+const RegisArea=$('RegisterArea');
+const ForgotArea=$('ForgotArea');
 const Logo = $("Logo");
 const nextImg=$('NextImg');
 const prevImg=$('PrevImg');
@@ -214,13 +271,264 @@ this.show=function(){
 drawObjINIT(this);
 }
 }
+//-------------PLAYER
+function _player(){
+this.name=sessionStorage.getItem("name");
+
+this.saying=sessionStorage.getItem("saying");
+
+this.email=localStorage.getItem("email");
+this.psswd=localStorage.getItem("psswd");
+}
+player= new _player();
+
+//-------------BACK BTN
+
+function GoBack(){
+window.location.reload();
+}
+//------------- CHECK LOGIN
+function isLoggedIn(data)
+{			//Call this every time you go to the main menu
+if(!checkInternetPerm)
+{
+showLogBtn("permission");
+return 0;
+
+}
+	if(navigator.onLine)
+	{
+	wasLoggedIn();	
+	}
+	else
+	{	
+	console.log("NOT Connected");
+	showLogBtn("offline");
+	}
+
+
+}
+
+
+function wasLoggedIn(){
+if(player.email==null||player.email=="null"||player.psswd==null||player.psswd=="null")
+	{
+	
+console.log(player.email,player.psswd);
+	showLogBtn("Login");	
+		return 0 ;	
+	}
+LoginAjax(player.email,player.psswd);
+}
 //---------------LOGIN
 function showLogin(){
-LoginArea.style.display="block";
+
+unhideUI(backBtn);
+unhideUI(LoginArea);
+}
+function Login(){
+form=document.forms["LoginForm"];
+email=form["player_email"].value;
+psswd=form["player_psswd"].value;
+LoginAjax(email,psswd);
+}
+unset_email="";
+unset_psswd="";
+function LoginAjax(email,psswd){
+data="player_email="+email+"&player_psswd="+psswd;
+unset_email=email;
+unset_psswd=psswd;
+ajaxPOST("./php/LoginPlayer.php",_Login,data);
+
+}
+function _Login(response){
+resArray=response.split("||");
+switch(resArray[0]){
+case "3":case "\n3":
+alert("The information you have provided is invalid");
+break;
+case "4":case "\n4":
+alert("Email Or Password in incorrect");
+showLogBtn("Login");
+break;
+default:
+player.email=unset_email;
+player.psswd=unset_psswd;
+localStorage.setItem("email",unset_email);
+localStorage.setItem("psswd",unset_psswd);
+player.name=resArray[1];
+sessionStorage.setItem("name",resArray[1]);
+hideUI(LoginArea);
+hideUI(backBtn);
+showLogBtn("Logged");
+getSaying();
+}
+}
+//--------------LOGIN,LOGOUT,OFFLINE
+function showLogBtn(i){
+switch (i){
+case "Logged":
+LoginBtn.innerHTML="<div onclick='showLogout()'>Hello "+player.name+"</div>";
+
+
+break;
+case "offline":
+	LoginBtn.innerHTML="<p class='centerUI'>You are offline</p>";
+break;
+case "Login":
+
+	LoginBtn.innerHTML="<div onclick='showLogin()'>Login</div>";
+break;
+case "permission":
+	
+	LoginBtn.innerHTML="<div onclick='askPermissions()'>Grant Internet Permission</div>";
+break;
+}
 }
 //--------------LOGOUT
 function showLogout(){
-LogoutArea.style.display="block";
+unhideUI(backBtn);
+unhideUI(LogoutArea);
+
+getSaying();
+}
+function LogOut(){
+ajaxGET("./php/Logout.php",_errorHandle);
+localStorage.setItem("email",null);
+localStorage.setItem("psswd",null);
+localStorage.setItem("name",null);
+}
+//---------------REGISTER
+function showRegis(){
+unhideUI(RegisArea);
+
+unhideUI(backBtn);
+
+}
+
+function ValRegis(){
+form=document.forms["Register"];
+name=form["player_name"].value;
+
+if(name==""){
+alert('Please Give A Nick Name');
+
+return false;
+}
+psswd= form['player_psswd'].value;
+psswd_2=form['player_psswd_2'].value;
+
+if(psswd!==psswd_2){
+alert("Passwords Do not match");
+return false;
+}
+email = form['player_email'].value;
+if(email.indexOf('@')<0||email.indexOf(".com")<0){
+
+alert('Wrong Email address');
+return false;
+}
+
+saying=form["player_saying"].value;
+addPlayer(name,psswd,email,saying);
+}
+
+function addPlayer(name,psswd,email,saying)
+{
+unset_email=name;
+unset_psswd=psswd;
+data="player_name="+name+"&player_email="+email+"&player_psswd="+psswd+"&player_saying="+saying;
+ajaxPOST("./php/newPlayer.php",_errorHandle,data);
+}
+//--------------------------Change Password
+function showForgot(){
+
+unhideUI(backBtn);
+unhideUI(ForgotArea);
+
+}
+
+function sendEmail(){
+
+email= document.forms["Forgot"]["player_email"].value;
+data="email="+email;
+
+ajaxPOST("./php/newToken.php",_errorHandle,data);
+}
+
+
+//--------------------------ERROR HANDLE
+function _errorHandle(response)
+{
+
+switch(response)
+{
+case "0":
+alert("Failed");
+break;
+case "1":case "\n1": 
+alert("That email is already in use");
+break;
+case "2":case "\n2":
+alert("Sorry That username is taken");
+break;
+case "3":case "\n3":
+alert("The information you have provided is invalid");
+break;
+case "4":case "\n4":
+alert("Email Or Password in incorrect");
+break;
+default : 
+GoBack();
+break;
+case "5":case "\n5":
+alert("Wrong Email Address");
+break;
+case "6":
+r=confirm("Sent Reset Password mail");
+if(r==true){
+GoBack();
+}
+break;
+case "7":case "\n7":
+
+GoBack();
+player.email=unset_email;
+getSaying();
+player.psswd=unset_psswd;
+localStorage.setItem("email",unset_email);
+localStorage.setItem("psswd",unset_psswd);
+LoginBtn("Logged");
+break;
+}
+
+console.log(response);
+
+}
+//---------------GetCurrentSaying
+function getSaying(){
+console.log("email=" +player.email);
+ajaxGET("./php/getVal.php?email="+player.email+"&val=saying",_getSaying);
+}
+function _getSaying(response){
+document.forms["ChangeSayForm"]["saying"].placeholder=response;
+
+document.forms["ChangeSayForm"]["saying"].value=response;
+player.saying=response;
+sessionStorage.setItem("saying",response);
+}
+//---------------CHANGING Saying
+function ChangeSay()
+{
+form=document.forms["ChangeSayForm"];
+newSaying= form["saying"].value;
+if(newSaying=="")
+{
+alert("The Value is Empty");
+return false;
+}
+link="./php/ChangeSay.php?email="+player.email+"&saying="+newSaying;
+ajaxGET(link,_errorHandle);
 }
 
 //--------------- LEVEL TRANSITION
@@ -251,13 +559,12 @@ function Restart(){
 
 gameTheme.loop();
 hideUI(sayingArea);
-hideUI(nextImg);
-hideUI(prevImg);
 hideUI(retry);
 hideUI(playBtn);
 hideUI(TutBtn);
-hideUI(TutImg);
+hideUI(TutImgDiv);
 hideUI(LoginBtn);
+hideUI(backBtn);
 unhideUI(ScoreText);
 unhideUI(LevelCounter);
 ToggleScore(false);
@@ -281,12 +588,10 @@ requestAnimationFrame(deltaTimeCal); // >>> Implement a time based system for th
 
 //------------- SHOW TUTORIAL
 function runTutorial(){
-
-unhideUI(nextImg);
-unhideUI(prevImg);
-playBtn.style.top=10;
+unhideUI(backBtn);
+playBtn.style.top=20;
 hideUI(TutBtn);
-unhideUI(TutImg);
+unhideUI(TutImgDiv);
 }
 
 function TutImgSrc(){
@@ -308,7 +613,8 @@ function TutImgSrc(){
 	
 		if(set<0){
 		if((this.imgNum!=0)){
-
+		
+			nextImg.innerHTML="Next";		
 		this.imgNum+=set;
 		this.Display();
 		}
@@ -320,18 +626,27 @@ function TutImgSrc(){
 		this.imgNum+=set;
 		this.Display();
 		}
+		else{
+		Restart();	
+		}
+		 if(this.imgNum==this.TutImageSrc.length-1)
+		{
+			
+			nextImg.innerHTML="Play";		
+		}
 		}
 	}		
 }
 
 //------------- SHOW MAIN MENU
 function showMainMenu(){
-
+hideUI(backBtn);
+isLoggedIn();
 showKingMsg();
+
 hideUI(ScoreText);
 hideUI(LoginArea);
-hideUI(nextImg);
-hideUI(prevImg);
+hideUI(RegisArea);
 clearScene();
 playBtn.style.top=canvas.height/2;
 hideUI(retry);
@@ -525,25 +840,26 @@ ScoreText.classList.add("SmallScore");
 }
 //-----------------KING
 function showKingMsg(){
-ajax("php/ks.php?Yep=1",_showKingMsg);
-
+if(checkInternetPerm())
+{
+ajaxGET("./php/ks.php",_showKingMsg);
+}
 }
 function _showKingMsg(response){
-    console.log(response);
 details=response.split("||");
 makeMsg(details);
 console.log(details);
 }
 
 function isNewKing(){
-ajax("php/Highest.php",_isNewKing);
+ajaxGET("./php/Highest.php",_isNewKing);
 }
 function _isNewKing(response)
 {
 
 if(Score>parseInt(response)){
 console.log("Congrats");
-ajax("php/newHigh.php?Score="+Score,newKing);
+ajaxGET("./php/newHigh.php?email="+player.email+"&Score="+Score,newKing);
 }
 
 }
@@ -554,7 +870,7 @@ if(response)
 showKingMsg();
 }
 }
-function ajax (link,func){
+function ajaxPOST (link,func,data){
 var xmlhttp= new XMLHttpRequest();
 xmlhttp.onreadystatechange=function(){
 if(this.readyState==4&&this.status==200){
@@ -562,13 +878,28 @@ console.log(this);
 func(this.responseText);
 }
 }
+xmlhttp.open("POST",link,true);
+xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+xmlhttp.send(data);
+}
+function ajaxGET(link,func){
+var xmlhttp= new XMLHttpRequest();
+xmlhttp.onreadystatechange=function(){
+if(this.readyState==4&&this.status==200){
+
+func(this.responseText);
+}
+}
 xmlhttp.open("GET",link,true);
 xmlhttp.send();
 }
-function makeMsg(King){
 
-output ="<table id='saying'><tr><td class='marqueeLabel'>"+King[0]+" :  "+King[1]+" Says</td><td><div class='marquee'><p>"+King[2]+"</p></div></td> </tr> </table>";
+function makeMsg(King){
+console.log(King[2]);
+output ="<table id='saying'><tr><td class='marqueeLabel'>"+King[0]+" :  "+King[1]+" Says</td><td><div class='marquee'><p id='marqP'>"+King[2]+"</p></div></td><tr></table>";
 sayingArea.innerHTML=output;
+$('marqP').style.animationDuration=(King[2].length*.6)+"s";
+
 }
 //------------------DESKTOP INPUT
 var isDragging=false;

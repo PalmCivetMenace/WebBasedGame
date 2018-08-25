@@ -1,0 +1,5 @@
+In a Web server cordova.js will not load
+
+So remove the parts which check if device is ready
+
+just have LogoEnd() in the end of the script

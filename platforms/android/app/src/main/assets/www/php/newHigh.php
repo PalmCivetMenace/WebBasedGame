@@ -1,8 +1,10 @@
+<?php header('Access-Control-Allow-Origin: *'); ?>
+
 <?php
 session_start();
 include 'dbcon.php';
 
-if(!isset($_SESSION["email"])){
+if(!isset($_GET["email"])){
 	echo 0;
 
 }

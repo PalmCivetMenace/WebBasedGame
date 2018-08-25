@@ -1,7 +1,7 @@
 <?php header('Access-Control-Allow-Origin: *'); ?>
 
 <?php
-session_start();
+session_start(); // session is not really required // Too lazy to remove
 include 'dbcon.php';
 $playerTable='Player';
 
@@ -36,11 +36,14 @@ if(!$stmt= $conn->prepare($DetailsQuery)){
 	{
 	$_SESSION['user']=$row["nickname"];
 	$_SESSION['email']=$row["email"];
-	$_SESSION['saying']=$row["saying"];
+	$_SESSION['saying']=$row["saying"];	
+	$_SESSION['skin']=$row["Selected"];
 	$_SESSION['loggedIn']=true;
 	
+	
 	}
-		echo "1||".$_SESSION['user'];
+		echo "1||".$_SESSION['user']."||".$_SESSION['skin']."||";
+		include 'boughtSkins.php';	
 
 }
 else {

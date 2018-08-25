@@ -7,6 +7,7 @@
     <author email="dev@cordova.apache.org" href="http://cordova.io">
         Apache Cordova Team
     </author>
+    <icon density="mdpi" height="512" platform="android" src="www/icon.png" width="512" />
     <content src="index.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />

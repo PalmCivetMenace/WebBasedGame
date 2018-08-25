@@ -1,34 +1,28 @@
+<?php header('Access-Control-Allow-Origin: *'); ?>
+
 <?php
-session_start();
-include 'header.php';
+
 include 'dbcon.php';
-include 'footer.php';
-$email=$_SESSION['email'];
+$email=$_GET['email'];
 
 ?>
-
-<h1>Saying</h1>
-
 <?php
-$newsaying=$_POST['saying'];
+$newsaying=$_GET['saying'];
 $updateQuery="UPDATE Player SET saying=? WHERE email=?";
 if(!$stmt=$conn->prepare($updateQuery))
 {
-echo "Prepare failed: (" . $conn->errno . ") " . $conn->error;
+echo "3";
 }
 $stmt->bind_param("ss",$newsaying,$email);
 $result=$stmt->execute();
 if($result)
 {
 	
-	$_SESSION['saying']= $newsaying;
-	echo "<p >Your new saying is <span><b>$newsaying</b></span></p>";
-
-	echo "<a class='centerUI basicBtn' href='../StartGame.php'>Play</a>";
+	echo"Done";
 }
 else 
 {
-	echo "Failed To Add Change Your Saying";
+	echo "0";
 }
 
 

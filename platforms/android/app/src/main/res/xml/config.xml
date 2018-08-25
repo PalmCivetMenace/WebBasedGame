@@ -4,6 +4,9 @@
         <param name="android-package" value="org.apache.cordova.whitelist.WhitelistPlugin" />
         <param name="onload" value="true" />
     </feature>
+    <feature name="Permissions">
+        <param name="android-package" value="com.android.plugins.Permissions" />
+    </feature>
     <name>Gallus</name>
     <description>
         A sample Apache Cordova application that responds to the deviceready event.
@@ -11,6 +14,7 @@
     <author email="dev@cordova.apache.org" href="http://cordova.io">
         Apache Cordova Team
     </author>
+    <icon density="mdpi" height="512" platform="android" src="www/icon.png" width="512" />
     <content src="index.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />

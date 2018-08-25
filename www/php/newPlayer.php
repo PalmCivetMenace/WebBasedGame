@@ -25,7 +25,7 @@ $checkEmail="SELECT email FROM $playerTable WHERE email=?";
 $checkName="SELECT email FROM $playerTable WHERE nickname=?";
 
 
-$insertQuery="INSERT INTO $playerTable VALUES(?,?,?,'',?)";
+$insertQuery="INSERT INTO $playerTable VALUES(?,?,?,'',?,1)";
 //----------------------------------------------------------
 if(!$stmt= $conn->prepare($checkEmail)){
 

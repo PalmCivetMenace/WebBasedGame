@@ -1,0 +1,11 @@
+{
+    "android": {
+        "release": {
+            "keystore": "KeyStore/gallus.keystore",
+            "storePassword": "111111",
+            "alias": "gallus",
+            "password" : "111111",
+            "keystoreType": ""
+        }
+       }
+}

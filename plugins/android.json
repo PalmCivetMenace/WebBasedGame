@@ -9,6 +9,9 @@
   "installed_plugins": {
     "cordova-plugin-whitelist": {
       "PACKAGE_NAME": "com.palmcivetmenace.Gallus"
+    },
+    "cordova-plugin-android-permissions": {
+      "PACKAGE_NAME": "com.palmcivetmenace.Gallus"
     }
   },
   "dependent_plugins": {}

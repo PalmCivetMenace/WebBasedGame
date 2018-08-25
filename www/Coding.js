@@ -118,6 +118,9 @@ const nextImg=$('NextImg');
 const prevImg=$('PrevImg');
 const SkinImg=$('SkinImg');
 const skinstate=$('skinstate');
+
+var skinList=["frog.svg","bubble.png","plat_1.png","plat_2.png"];
+
 var highScore=localStorage.getItem("HighScore");
 var isGameOver=true;  // So that immediately the game will not start working ...
 if(highScore==null){	// This runs only once .. The first time the game is opened
@@ -281,7 +284,7 @@ function SkinManager()
 	if(navigator.onLine)
 	{this.selected=player.skin-1; // Database starts from 1
 	}
-	this.list=["frog.svg","bubble.png","plat_1.png","plat_2.png"];
+	this.list=skinList;
 	this.bought;
 	this.checkIfBought=function(num)
 	{
@@ -564,6 +567,7 @@ player.bought=resArray[3];
 sessionStorage.setItem("skin",resArray[2]);
 sessionStorage.setItem("name",resArray[1]);
 sessionStorage.setItem("bought",player.bought);
+frog.image=skinList[resArray[2]-1];
 hideUI(LoginArea);
 hideUI(backBtn);
 showLogBtn("Logged");

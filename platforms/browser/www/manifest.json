@@ -6,6 +6,12 @@
   "version": "com.palmcivetmenace.Gallus",
   "description": "A sample Apache Cordova application that responds to the deviceready event.",
   "author": "Apache Cordova Team",
-  "icons": [],
+  "icons": [
+    {
+      "src": "www/icon.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
   "start_url": "index.html"
 }
