@@ -119,7 +119,7 @@ const prevImg=$('PrevImg');
 const SkinImg=$('SkinImg');
 const skinstate=$('skinstate');
 
-var skinList=["frog.svg","bubble.png","plat_1.png","plat_2.png"];
+var skinList=["frog.svg","frog_2.svg","plat_1.png","plat_2.png"];
 
 var highScore=localStorage.getItem("HighScore");
 var isGameOver=true;  // So that immediately the game will not start working ...
@@ -156,8 +156,10 @@ this.DeathSpeed=0.005;
 this.savedX=0;
 this.savedY=0;
 this.calVel=function(x,y){
-forceX=(this.savedX)-x+(document.body.clientWidth)/2-(canvas.width/2);
-forceY=this.savedY-y;
+//forceX=(this.savedX)-x+(document.body.clientWidth)/2-(canvas.width/2); // From the Frog
+//forceY=this.savedY-y;
+forceX=(canvas.width/2)-x+(document.body.clientWidth)/2-(canvas.width/2); //From the Middle Of the Screen
+forceY=(canvas.height/2)-y;
 
 //console.log(x,y,forceX,forceY);
 this.Velx=this.speed*forceX;
@@ -174,9 +176,9 @@ this.img = new Image();
 function _fly(x,y,Vely){
 
 var flyImgs=[
-[20,20,"plat_2.png"],
-[20,20,"plat_2.png"],
-[20,20,"plat_3.png"],
+[20,20,"fly.png"],
+[20,20,"fly.png"],
+[20,20,"fly.png"],
 ];
 
 // Explaination = [width:20,height:100,image:"plat_2.png"] 
