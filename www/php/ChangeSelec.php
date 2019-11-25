@@ -5,12 +5,13 @@ $Sel= $_GET["Sel"];
 
 $query="UPDATE Player SET Selected=$Sel WHERE email='$email'";
 $result= mysqli_query($conn,$query);
+
 if($result)
-{
- echo 1;
-}
+ {
+  echo 1;
+ }
 else
-{
-echo 0;
-}
+ {
+ echo 0;
+ }
 ?>
